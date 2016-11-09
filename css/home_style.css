@@ -1,0 +1,73 @@
+@charset "utf-8";
+/* CSS Document */
+
+#job-info
+{
+	width:328px;
+	float:left;
+	position:fixed;
+}
+
+#job-info ul,
+#job-info ul li {
+	
+	list-style-type:none;
+	margin: 0;
+	padding: 0;
+
+}
+
+#job-info ul li.job-info-header 
+{
+	background:url(../images/job_info_header.png) no-repeat;
+	text-indent:-10000px;
+
+	width:328px;
+	height:44px;
+}
+
+#job-info ul li.job-info-body
+{
+	background:url(../images/job_info_body_h.png);
+	
+	width:328px;
+	height:460px;
+}
+
+#job-info .job-info-body-wrapper
+{
+	background:url(../images/job_info_body.png) repeat-x;
+	margin-left:5px;
+	padding: 10px;
+	width:290px;
+	height:460px;
+	
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:12px;
+	color:#FFF;
+}
+
+#job-info ul li.job-info-footer
+{
+	background:url(../images/job_info_footer.png) no-repeat;
+	text-indent:-10000px;
+
+	width:328px;
+	height:39px;
+}
+
+#job-info .box
+{
+	padding:5px;
+	height:80px;
+	width:100%;	
+	background:url(../images/job_info_box_line.png) no-repeat bottom;	
+}
+
+#page-contents
+{
+	float:left;
+	margin-left:330px;
+	height:1000px;
+
+}

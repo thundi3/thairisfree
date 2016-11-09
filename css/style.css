@@ -1,0 +1,377 @@
+@charset "utf-8";
+/* CSS Document */
+
+body
+{
+	margin:0px;
+	padding:0px;
+	background:#007bbc url(../images/bg.png) repeat-x fixed;
+
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:11px;
+}
+
+/*--------------- Header --------------*/
+#header
+{
+	top:0px;
+	position:fixed;
+	background:url(../images/header_bg.png) repeat-x;
+	width:100%;
+	height:129px;
+}
+
+#header ul,
+#header ul li {
+	float: left;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	line-height: 48px;
+}
+
+#header ul li.logo
+{
+	background:url(../images/logo.png) no-repeat;
+	text-indent:-10000px;
+
+	width:179px;
+	height:43px;	
+}
+
+#header ul li.name-software
+{
+	background:url(../images/reporting_sys.png) no-repeat;
+	text-indent:-10000px;
+
+	width:203px;
+	height:43px;	
+}
+
+#header ul li.logout
+{
+	background:url(../images/logout.png) no-repeat;
+	text-indent:-10000px;
+	
+	display: block;	
+	width:40px;		
+	text-decoration:none;	
+}
+
+#bar-action .left
+{
+	top:129px;
+	position:fixed;
+	
+	background:url(../images/bar_menu_bg_left.png) no-repeat;
+	
+	float: left;
+	width:30px;
+	height:45px;
+}
+
+#bar-action .right
+{
+	top:129px;
+	left:30px;
+	position:fixed;	
+	background:url(../images/bar_menu_bg.png);
+	
+	float: left;
+	height:45px;
+}
+
+#main-menu #navigation
+{	
+	background:url(../images/main_menu_bg.png) repeat-x;
+	height:83px;	
+}
+
+#main-menu #navigation ul, #navigation li
+{
+	background-color:#0C9;
+  
+	
+}
+
+#main-menu #navigation li.home
+{
+	float:left;
+	background:url(../images/icoHome.png) no-repeat center;
+	height:53px;	
+	width:95px;
+}
+
+#main-menu #navigation li.register
+{
+	background:url(../images/icoRegister.png) no-repeat center;
+	height:53px;	
+	width:95px;
+}
+
+#main-menu #navigation li.order
+{
+	background:url(../images/icoOrder.png) no-repeat center;
+	height:53px;	
+	width:95px;
+}
+
+#main-menu #navigation li.operate
+{
+	background:url(../images/icoXray.png) no-repeat center;
+	height:53px;	
+	width:95px;
+}
+
+#main-menu #navigation li.reporting
+{
+	background:url(../images/icoReporting.png) no-repeat center;
+	height:53px;	
+	width:95px;
+}
+
+#main-menu #navigation li.search
+{
+	background:url(../images/icoSearch.png) no-repeat center;
+	height:53px;	
+	width:95px;
+}
+
+#main-menu #navigation li.reports
+{
+	background:url(../images/icoReports.png) no-repeat center;
+	height:53px;	
+	width:95px;
+}
+
+#main-menu #navigation li.management
+{
+	background:url(../images/icoManagement.png) no-repeat center;
+	height:53px;	
+	width:95px;
+}
+
+#main-menu #navigation li.help
+{
+	background:url(../images/icoHelp.png) no-repeat center;
+	height:53px;	
+	width:95px;
+}
+
+#main-menu #navigation li.line
+{
+	background:url(../images/icoLine.png) repeat-y right;
+	width:2px;
+	height:56px;
+}
+
+#main-menu #navigation li h1
+{	
+	color:#FFF;
+	font-weight:bold;
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:11px;
+	text-align:center;
+	margin-top:45px;	
+}
+
+#main-menu #navigation li h1 a
+{	
+	color:#FFF;
+	font-weight:bold;
+	font-family:Verdana, Tahoma;
+	text-align:center;
+	margin-top:45px;
+	text-decoration:none;
+}
+
+#account-status
+{
+	background:url(../images/main_menu_bg.png) repeat-x;
+	height:83px;	
+	width:327px;
+	float:left;
+		
+}
+
+#account-status .photo-frame
+{
+	background:url(../images/photo_frame.png) no-repeat;
+	height:82px;	
+	width:82px;
+	float:left;		
+}
+
+#account-status .photo-display
+{
+	background:#FFF url(../tmp/display.png) no-repeat;
+	height:82px;	
+	width:82px;
+	float:left;		
+}
+
+#account-status h2
+{
+	margin:0px;
+	padding:0px;
+	
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:11px;
+	color:#404040;
+}
+
+#account-status .Acc-Info
+{
+	float:left;	
+	width:190px;
+	margin-top:10px;
+
+}
+
+#account-status .Acc-Info a
+{
+	color:#060;
+	
+}
+
+#account-status a.time-login
+{
+	color:#F30;
+	text-decoration:none;
+	
+}
+
+#account-status .Acc-Status
+{
+	float:left;
+	margin-top:15px;
+	margin-left:10px;
+
+}
+
+#bar-action #bar
+{
+	clear:both;
+	margin-top:9px;
+	margin-right:10px;
+	background:url(../images/bar_action_bg.png) no-repeat;
+	height:37px;	
+	width:447px;
+	float:right;
+	
+}
+
+#bar-action #bar .actionCmd
+{
+	clear:both;
+	float:left;
+
+	width:250px;
+	margin-left:30px;
+	margin-top:5px;
+	
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:16px;
+}
+
+#bar-action #bar .line
+{
+	background:url(../images/bar_action_line.png) no-repeat;
+	float:left;
+	height:30px;	
+	width:2px;
+}
+
+#bar-action #bar .icoClock
+{
+	background:url(../images/icoClock.png) no-repeat;
+	float:left;
+	margin-top:3px;
+	margin-left:15px;
+	height:22px;	
+	width:22px;
+}
+
+
+
+/*--------- body-content ----------*/
+#body-contents
+{
+
+	margin-top:3px;
+}
+
+/*--------- footer ----------*/
+#footer
+{
+	background:url(../images/footer_bg.png);
+	
+	position:fixed;
+	bottom:0px;
+	height:49px;
+	width:100%;
+}
+
+#footer .notification-bar
+{
+	margin-top:10px;
+	margin-left:10px;
+	font-weight:bold;	
+	font-size:12px;
+	float:left;
+}
+
+#footer .notification-alertIcon
+{
+	background:url(../images/icoNotification.png) no-repeat ;
+	margin-top:10px;
+	margin-left:5px;
+	padding:0px;
+	padding-left:30px;
+	padding-top:2px;
+	font-weight:bold;
+	font-size:12px;
+	float:left;
+	height:17px;
+	display:block;
+	
+}
+
+#footer .notification-alert
+{
+	margin-top:10px;
+	margin-left:5px;
+	padding:0px;
+	padding-top:2px;
+	font-weight:normal;
+	font-size:12px;
+	color:#F30;
+	float:left;
+	
+}
+
+#footer .line
+{
+	margin-top:2px;
+	margin-left:15px;
+	margin-right:15px;
+
+	float:left;
+	width:2px;
+	height:31px;
+	background:url(../images/footer_line.png);
+}
+
+#footer .search
+{
+	background:url(../images/footer_search_bg.png);
+	height:29px;
+	width:259px;
+	float:right;
+	margin-top:15px;
+	margin-right:15px;
+	padding:0px;
+	font-weight:normal;
+	font-size:12px;
+
+}

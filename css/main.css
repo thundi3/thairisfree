@@ -1,0 +1,39 @@
+#header-wrap {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;	
+}
+
+#header-container {
+	height: 20px;
+	//background: url(../images/header-bg.png) repeat-x left bottom;
+}
+
+#header {
+	width: 940px;
+	margin: 0 auto;
+	position: relative;
+}
+
+#footer-wrap {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;	
+}
+
+#footer-container {
+	height: 20px;
+	background: url(../images/footer-bg.png) repeat-x left bottom;
+}
+
+#footer {
+	width: 940px;
+	margin: 0 auto;
+	position: relative;
+}
+
+.event-block{
+	border: 3px solid #FFFF00;
+}

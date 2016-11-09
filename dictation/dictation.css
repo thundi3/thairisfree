@@ -1,0 +1,247 @@
+.foot {
+    text-align:center;
+}
+a {
+    color:#222;
+    text-decoration:none;
+}
+h1 {
+    font-size: 18px;
+    font-weight:normal
+}
+h2 {
+    font-size: 16px;
+    font-weight:normal
+}
+h3 {
+    font-weight:normal
+}
+.info a {
+    color:#fff;
+    text-decoration:underline
+}
+.info {
+    display:none;
+    position: relative;
+    margin: 60px auto;
+    width: 80%;
+    max-width: 600px;
+    min-width: 200px;
+    line-height: 18px;
+    font-size: 13px;
+    font-family:'Open Sans', sans;
+    color: #fff;
+    height:auto;
+    padding: 1em 2em;
+    background-color:#000;
+    opacity:.9;
+}
+html, body {
+    height:100%;
+    min-height:100%;
+    padding:0;
+    margin:0
+}
+/* CSS by Thibaut Courouble of CSSFlow.com MIT License */
+ body {
+    font: 12px/18px "Open Sans", sans-serif;
+    background: #3498db;
+    color: #404040;
+}
+.notepad, .notepad:before, .notepad:after {
+    background-color: #fff;
+    background-image: -webkit-linear-gradient(#f6abca 1px, transparent 1px), -webkit-linear-gradient(#f6abca 1px, transparent 1px), -webkit-linear-gradient(#e8e8e8 1px, transparent 1px);
+    background-image: -moz-linear-gradient(#f6abca 1px, transparent 1px), -moz-linear-gradient(#f6abca 1px, transparent 1px), -moz-linear-gradient(#e8e8e8 1px, transparent 1px);
+    background-image: -o-linear-gradient(#f6abca 1px, transparent 1px), -o-linear-gradient(#f6abca 1px, transparent 1px), -o-linear-gradient(#e8e8e8 1px, transparent 1px);
+    background-image: linear-gradient(#f6abca 1px, transparent 1px), linear-gradient(#f6abca 1px, transparent 1px), linear-gradient(#e8e8e8 1px, transparent 1px);
+    background-size: 1px 1px, 1px 1px, 30px 30px;
+    background-repeat: repeat-y, repeat-y, repeat;
+    background-position: 22px 0, 25px 0, 0 50px;
+    border-radius: 2px;
+    -webkit-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15), 0 0 4px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15), 0 0 4px rgba(0, 0, 0, 0.5);
+}
+.notepad {
+    position: relative;
+    margin: 40px auto 40px;
+    padding: 0 23px 14px 35px;
+    width: 80%;
+    max-width: 600px;
+    min-width: 200px;
+    min-height:76%;
+    height:auto;
+    font: 16px/30px Cambria, Georgia, serif;
+    color: #282625;
+}
+.notepad p, .notepad blockquote {
+    margin-bottom: 30px;
+}
+.notepad :last-child {
+    margin-bottom: 0;
+}
+.notepad:before, .notepad:after {
+    content:'';
+    position: absolute;
+    z-index: -1;
+    top: 100%;
+    left: 3px;
+    right: 3px;
+    margin-top: -2px;
+    height: 4px;
+    background-size: 1px 1px, 1px 1px, 0 0;
+}
+.notepad:before {
+    z-index: -2;
+    left: 6px;
+    right: 6px;
+    height: 6px;
+    background-color: #eee;
+}
+.notepad-heading {
+    position: relative;
+    margin: 0 -23px 20px -35px;
+    height: 60px;
+    background: #14466a;
+    border-radius: 2px 2px 0 0;
+    background-image: -webkit-linear-gradient(top, #226797, #0c3452);
+    background-image: -moz-linear-gradient(top, #226797, #0c3452);
+    background-image: -o-linear-gradient(top, #226797, #0c3452);
+    background-image: linear-gradient(to bottom, #226797, #0c3452);
+    -webkit-box-shadow: inset 0 1px #2f81ad, 0 2px 1px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(0, 0, 0, 0.5), 0 1px #000;
+    box-shadow: inset 0 1px #2f81ad, 0 2px 1px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(0, 0, 0, 0.5), 0 1px #000;
+}
+.notepad-heading > h1 {
+    line-height: 60px;
+    font-size: 18px;
+    font-weight: normal;
+    text-transform: uppercase;
+    color: #fff;
+    text-align: center;
+    text-shadow: 0 -1px rgba(0, 0, 0, 0.7);
+}
+.notepad-heading:before, .notepad-heading:after {
+    content:'';
+    position: absolute;
+    bottom: 2px;
+    left: 1px;
+    right: 1px;
+    height: 0;
+    border-top: 1px dashed #617c90;
+    border-color: rgba(255, 255, 255, 0.35);
+}
+.notepad-heading:after {
+    bottom: 3px;
+    border-color: #071c2c;
+    border-color: rgba(0, 0, 0, 0.5);
+}
+#speech {
+    padding-bottom:2em;
+}
+#labnol {
+    min-height:80%;
+    height:auto;
+    clear:both;
+}
+#labnol:focus {
+    outline: none;
+}
+.heading {
+    margin: 1em;
+    padding: 1em
+}
+.whatisthis {
+    position:absolute;
+    bottom:10px;
+    width:94%;
+}
+
+#status {
+    display:none;
+    float:right;
+    position: absolute;
+    bottom: 0;
+    right: 5px;
+}
+
+.top {
+    text-align:center;
+    padding: 10px;
+    background-color:#222;
+    opacity:.9;
+}
+a.btn {
+    display: inline;
+    padding: 5px 10px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    color: #eee;
+    -webkit-transition: all 200ms ease-out;
+    -mozilla-transition: all 200ms ease-out;
+    -ms-transition: all 200ms ease-out;
+    -o-transition: all 200ms ease-out;
+    transition: all 200ms ease-out;
+    text-decoration:none;
+    margin: 0 6px 0 0;
+    text-transform:uppercase;
+    font-size: 11px;
+}
+a.btn:hover, a.btn:active {
+    background: #2980B9;
+    color: #FFF;
+}
+#messages a {
+    display: inline;
+    padding: 4px 10px;
+    background: #444;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    color: #eee;
+    -webkit-transition: all 200ms ease-out;
+    -mozilla-transition: all 200ms ease-out;
+    -ms-transition: all 200ms ease-out;
+    -o-transition: all 200ms ease-out;
+    transition: all 200ms ease-out;
+    text-decoration:none;
+    margin: 0 5px 0 0;
+    font: 11px/18px "Open Sans", sans-serif;
+    text-transform: uppercase;
+}
+#messages a:hover, #messages a.active {
+    background: #2980B9;
+    color: #FAEFDE;
+}
+#notfinal {
+    color: #666;
+}
+
+#messages {
+    float:left;
+}
+#warning {
+    display:block;
+    color:#333;
+    width:100%;
+    opacity:.9
+}
+
+.social {margin:2em auto 1em; width:220px;}
+
+.platforms {
+    font: 12px/18px "Open Sans", sans-serif
+    margin: 1em auto;
+    color: white;
+    text-align: center;
+}
+
+.platforms a, .platforms a:link {
+    color: white;
+    text-decoration: none;
+}
+@media (max-width: 480px) {
+    .top { display: none }
+    .notepad-heading > h1 { margin: 0}
+    .notepad { margin: 0 ; width: auto;}
+    body { background: #fff; padding: 0; }
+}

@@ -1,0 +1,38 @@
+body {
+font-family: Arial;
+font-size: 14px;
+}
+.bgColor {
+width: 450px;
+height:100px;
+background-color: #F9D735;
+}
+.bgColor label{
+font-weight: bold;
+color: #A0A0A0;
+}
+#targetLayer{
+float:left;
+width:100px;
+height:100px;
+text-align:center;
+line-height:100px;
+font-weight: bold;
+color: #C0C0C0;
+background-color: #F0E8E0;
+overflow:auto;
+}
+#uploadFormLayer{
+float:right;
+padding: 10px;
+}
+.btnSubmit {
+background-color: #3FA849;
+padding:4px;
+border: #3FA849 1px solid;
+color: #FFFFFF;
+}
+.inputFile {
+padding: 3px;
+background-color: #FFFFFF;
+}
