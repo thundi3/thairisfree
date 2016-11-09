@@ -1,0 +1,2233 @@
+-- phpMyAdmin SQL Dump
+-- version 4.4.15
+-- http://www.phpmyadmin.net
+--
+-- Host: localhost
+-- Generation Time: Nov 09, 2016 at 02:23 PM
+-- Server version: 10.1.18-MariaDB
+-- PHP Version: 5.3.29
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `thairisn_thairis`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_auto`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_auto` (
+  `ID` int(11) NOT NULL,
+  `LAST_REQUEST_NO` varchar(10) NOT NULL,
+  `YEAR` year(4) NOT NULL
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=tis620;
+
+--
+-- Dumping data for table `xray_auto`
+--
+
+INSERT INTO `xray_auto` (`ID`, `LAST_REQUEST_NO`, `YEAR`) VALUES
+(1, '65', 2016);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_billing`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_billing` (
+  `ID` int(11) NOT NULL,
+  `XRAY_BILL_NO` varchar(10) NOT NULL,
+  `REQUEST_NO` varchar(10) NOT NULL,
+  `XRAY_CODE` varchar(10) NOT NULL,
+  `XRAY_PRICE` int(10) unsigned NOT NULL,
+  `DF` int(10) unsigned DEFAULT NULL,
+  `CHARGED` int(1) unsigned DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=tis620;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_birad`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_birad` (
+  `ID` int(2) NOT NULL,
+  `BIRAD` varchar(10) NOT NULL,
+  `LEVEL` varchar(1) NOT NULL,
+  `DESCRIPTION` varchar(60) NOT NULL,
+  `DETAIL` varchar(200) NOT NULL,
+  `DETAIL_THAI` varchar(200) NOT NULL,
+  `FOLLOW_UP` varchar(10) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=tis620;
+
+--
+-- Dumping data for table `xray_birad`
+--
+
+INSERT INTO `xray_birad` (`ID`, `BIRAD`, `LEVEL`, `DESCRIPTION`, `DETAIL`, `DETAIL_THAI`, `FOLLOW_UP`) VALUES
+(1, 'BI-RADS 0', '0', 'BI-RADS 0 : Incomplete assessment ', 'Your mammogram or ultrasound didn''t give the radiologist enough information to make a clear diagnosis; follow-up imaging is necessary', '', ''),
+(2, 'BI-RADS 1', '1', 'BI-RADS 1 : Negative finding(s) (within normal) ', 'There is nothing to comment on; routine screening recommended', '', ''),
+(3, 'BI-RADS 2', '2', 'BI-RADS 2 : Benign finding(s)', 'A definite benign finding; routine screening recommended', '', ''),
+(4, 'BI-RADS 3', '3', 'BI-RADS 3 : Probably benign finding(s), 12-months follow-up', 'Findings that have a high probability of being benign (>98%); 12-month short interval follow-up', '', ''),
+(5, 'BI-RADS 4', '4', 'BI-RADS 4 : Suspicious abnormality, biopsy recommend ', 'Not characteristic of breast cancer, but reasonable probability of being malignant (3 to 94%); biopsy should be considered', '', ''),
+(6, 'BI-RADS 5', '5', 'BI-RADS 5 : Highly suggestive of malignancy ', 'Lesion that has a high probability of being malignant (>= 95%); take appropriate action', '', ''),
+(7, 'BI-RADS 6', '6', 'BI-RADS 6 : Known Biopsy Proven Malignancy', 'Lesions known to be malignant that are being imaged ', '', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_body_part`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_body_part` (
+  `ID` varchar(3) NOT NULL,
+  `BODY_PART` varchar(20) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=tis620;
+
+--
+-- Dumping data for table `xray_body_part`
+--
+
+INSERT INTO `xray_body_part` (`ID`, `BODY_PART`) VALUES
+('', 'ABDOMEN'),
+('', 'CHEST'),
+('', 'HEAD'),
+('', 'LOWER EXTREMITY'),
+('', 'MAMMO'),
+('', 'NECK'),
+('', 'OTHER'),
+('', 'PELVIS'),
+('', 'SHOULDER'),
+('', 'SPINE'),
+('', 'UPPER EXTREMITY');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_center`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_center` (
+  `CODE` varchar(20) NOT NULL,
+  `NAME` varchar(50) DEFAULT NULL,
+  `NAME_ENG` varchar(50) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=tis620;
+
+--
+-- Dumping data for table `xray_center`
+--
+
+INSERT INTO `xray_center` (`CODE`, `NAME`, `NAME_ENG`) VALUES
+('THAIRIS', 'Thai RIS', 'Thai Radio');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_code`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_code` (
+  `CENTER` varchar(10) NOT NULL,
+  `XRAY_CODE` varchar(20) NOT NULL,
+  `DESCRIPTION` varchar(50) NOT NULL,
+  `XRAY_TYPE_CODE` varchar(50) NOT NULL,
+  `BODY_PART` varchar(15) NOT NULL,
+  `CHARGE_TOTAL` float unsigned NOT NULL,
+  `PORTABLE_CHARGE` int(4) NOT NULL,
+  `DF` int(5) unsigned DEFAULT NULL,
+  `TIME_USE` int(3) unsigned DEFAULT NULL,
+  `BIRAD_FLAG` varchar(1) NOT NULL DEFAULT '0',
+  `PREP_ID` varchar(10) NOT NULL,
+  `DELETE_FLAG` int(1) NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=tis620;
+
+--
+-- Dumping data for table `xray_code`
+--
+
+INSERT INTO `xray_code` (`CENTER`, `XRAY_CODE`, `DESCRIPTION`, `XRAY_TYPE_CODE`, `BODY_PART`, `CHARGE_TOTAL`, `PORTABLE_CHARGE`, `DF`, `TIME_USE`, `BIRAD_FLAG`, `PREP_ID`, `DELETE_FLAG`) VALUES
+('THAIRIS', 'B0101', 'CHEST (PA UPRIGHT)', 'XRAY', 'CHEST', 250, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'B0102', 'CHEST', 'XRAY', 'CHEST', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'B0103', 'CHEST-RT(LAT)', 'XRAY', 'CHEST', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'B0104', 'CHEST-LT(LAT)', 'XRAY', 'CHEST', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'B0105', 'CHEST-RT(LAT DECUBITUS)', 'XRAY', 'CHEST', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'B0106', 'CHEST-LT(LAT DECUBITUS)', 'XRAY', 'CHEST', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'B0107', 'CHEST(LORDOTICOR APICOGRAM)', 'XRAY', 'CHEST', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'B0108', 'CHEST-RT(AP OBLIQUE)', 'XRAY', 'CHEST', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'B0109', 'CHEST-LT(AP OBLIQUE)', 'XRAY', 'CHEST', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'B0202', 'RIB-RT(OBLIQUE)', 'XRAY', 'CHEST', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'B0203', 'RIB-LT(OBLIQUE)', 'XRAY', 'CHEST', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'B0204', 'RIB-BOTH(OBLIQUE)', 'XRAY', 'CHEST', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'B0205', 'RIB-RT(PA, OBLIQUE)', 'XRAY', 'CHEST', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'B0206', 'RIB-LT(PA, OBLIQUE)', 'XRAY', 'CHEST', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'B0207', 'RIB(PA FOR CHEST, BOTH OBLIQUE) ', 'XRAY', 'CHEST', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'B0208', 'RIB RT(PA  FOR CHEST, OBLIQUE) ', 'XRAY', 'CHEST', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'B0209', 'RIB LT(PA FOR CHEST, OBLIQUE) ', 'XRAY', 'CHEST', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'B0301', 'CLAVICLE-RT', 'XRAY', '', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'B0302', 'CLAVICLE-LT', 'XRAY', '', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'B0705', 'SCAPULAR-RT(AP, LAT)', 'XRAY', '', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'B0706', 'SCAPULAR-LT(AP, LAT)', 'XRAY', '', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'B0707', 'SCAPULAR-BOTH(AP, LAT)', 'XRAY', '', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'B0801', 'ABDOMEN(UPRIGHT)', 'XRAY', 'ABDOMEN', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'B0802', 'ABDOMEN(SUPINE)', 'XRAY', 'ABDOMEN', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'B0803', 'ABDOMEN(LAT)', 'XRAY', 'ABDOMEN', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'B0804', 'ABDOMEN(SUPINE, UPRIGHT)', 'XRAY', 'ABDOMEN', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'B0805', 'ACUTE ABDOMEN SERIES(CHEST,ABDOMEN)', 'XRAY', 'ABDOMEN', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'B0806', 'ABDOMEN-RT(LAT DECUBITUS)', 'XRAY', 'ABDOMEN', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'B0807', 'ABDOMEN-LT(LAT DECUBITUS)', 'XRAY', 'ABDOMEN', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'B0808', 'ABDOMEN-RT(DORSAL  DECUBITUS)', 'XRAY', 'ABDOMEN', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'B0809', 'ABDOMEN-LT(DORSAL  DECUBITUS)', 'XRAY', 'ABDOMEN', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'B0810', 'ABDOMEN-(LAT CROSSTABLE)', 'XRAY', 'ABDOMEN', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'B0901', 'PLAIN KUB(AP)', 'XRAY', 'ABDOMEN', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'B0902', 'KUB AND LAT LS SPINE', 'XRAY', 'SPINE', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'B1001', 'PELVIS(AP)', 'XRAY', 'PELVIS', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'B1002', 'PELVIS(FROG LEG)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'B1003', 'PELVIS(AP,FROG LEG)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'B1004', 'PELVIS(JUDET''S VIEW)', 'XRAY', 'PELVIS', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'B1005', 'PELVIS(AP, JUDET''S VIEW)', 'XRAY', 'PELVIS', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'B1006', 'PELVIS(INLET,OUTLET VIEW)', 'XRAY', 'PELVIS', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'B1007', 'PELVIS RT OBLIQUE', 'XRAY', 'PELVIS', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'B1008', 'PELVIS LT OBLIQUE', 'XRAY', 'PELVIS', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'B1009', 'PELVIS AP Long Film', 'XRAY', 'PELVIS', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'BD101', 'BONE DENSITY-FORARM-RT', 'BMD', 'UPPER EXTREMITY', 2000, 0, 500, 20, '0', '', 0),
+('THAIRIS', 'BD102', 'BONE DENSITY- FORARM-LT', 'BMD', 'UPPER EXTREMITY', 2000, 0, 500, 20, '0', '', 0),
+('THAIRIS', 'BD103', 'BONE DENSITY-HIP-RT', 'BMD', 'PELVIS', 2000, 0, 500, 20, '0', '', 0),
+('THAIRIS', 'BD104', 'BONE DENSITY-HIP-LT', 'BMD', 'PELVIS', 2000, 0, 500, 20, '0', '', 0),
+('THAIRIS', 'BD105', 'BONE DENSITY-HIP-BOTH', 'BMD', 'PELVIS', 2000, 0, 500, 20, '0', '', 0),
+('THAIRIS', 'BD106', 'BONE DENSITY-LUMBAR SPINE-AP', 'BMD', 'SPINE', 2000, 0, 500, 20, '0', '', 0),
+('THAIRIS', 'C0110', 'CT BRAIN+ORBIT', 'CT', 'HEAD', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C0111', 'CT BRAIN+SINUS', 'CT', 'HEAD', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C0201', 'CT TEMPORAL BONE', 'CT', '', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C0202', 'CT PARANASAL SINUSES', 'CT', 'HEAD', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C0203', 'CT PARANASAL SINUSES FOR NAVIGATOR', 'CT', 'HEAD', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C0204', 'CT FACIAL BONE', 'CT', 'HEAD', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C0205', 'CT ORBIT', 'CT', 'HEAD', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C0206', 'CT NASOPHARYNX', 'CT', '', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C0207', 'CT NECK OR THYROID OR PARATHYROID', 'CT', '', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C0208', 'CT NECK FOR NODAL STAGING', 'CT', 'NECK', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C0209', 'CT LARYNX', 'CT', 'NECK', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C0210', 'CT ORAL CAVITY', 'CT', 'NECK', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C0211', 'CT OROPHARYNX', 'CT', 'NECK', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C0212', 'CT HEAD AND NECK(TUMOR+NODAL STAGING)', 'CT', 'HEAD', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C0301', 'CT DENTAL MAXILLA', 'CT', 'HEAD', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C0302', 'CT DENTAL MANDIBLE', 'CT', 'HEAD', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C0401', 'CT CERVICAL  SPINE ', 'CT', 'SPINE', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C0402', 'CT CERVICAL  SPINE AND DYNAMIC', 'CT', 'SPINE', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C0403', 'CT THORACIC SPINE', 'CT', 'SPINE', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C0404', 'CT THORACOLUMBAR SPINE', 'CT', 'SPINE', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C0405', 'CT LUMBROSACRAL SPINE', 'CT', 'SPINE', 5000, 0, 1000, 30, '0', '', 0),
+('THAIRIS', 'C0406', 'CT WHOLE SPINE', 'CT', 'SPINE', 5000, 0, 1000, 30, '0', '', 0),
+('THAIRIS', 'C0407', 'CT SACRUM AND COCCYX', 'CT', 'SPINE', 5000, 0, 1000, 30, '0', '', 0),
+('THAIRIS', 'C0501', 'CT CHEST NON CONTRAST MEDIA', 'CT', 'CHEST', 5000, 0, 1000, 30, '0', '', 0),
+('THAIRIS', 'C0502', 'CT CHEST WITH CONTRAST MEDIA', 'CT', 'CHEST', 5000, 0, 1000, 30, '0', '', 0),
+('THAIRIS', 'C0503', 'CT CHEST FOR PULMONARY EMBOLIZATION', 'CT', 'CHEST', 5000, 0, 1000, 30, '0', '', 0),
+('THAIRIS', 'C0504', 'CT HRCT', 'CT', '', 5000, 0, 1000, 30, '0', '', 0),
+('THAIRIS', 'C0505', 'CT LUNG FUNCTIONAL', 'CT', 'CHEST', 5000, 0, 1000, 30, '0', '', 0),
+('THAIRIS', 'C0601', 'CT CORONARY ARTERY CALCIFICATION', 'CT', '', 5000, 0, 1000, 30, '0', '', 0),
+('THAIRIS', 'C0602', 'CTA CORONARY(ROUTINE)', 'CT', '', 5000, 0, 1000, 30, '0', '', 0),
+('THAIRIS', 'C0603', 'CTA CORONARY TRIPLE R/O', 'CT', '', 5000, 0, 1000, 30, '0', '', 0),
+('THAIRIS', 'C0604', 'CTA CORONARY GRAFT EVALUATION', 'CT', '', 5000, 0, 1000, 30, '0', '', 0),
+('THAIRIS', 'C0701', 'CT UPPER ABDOMEN', 'CT', 'ABDOMEN', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C0702', 'CT LOWER ABDOMEN', 'CT', 'ABDOMEN', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C0703', 'CT WHOLE ABDOMEN', 'CT', 'ABDOMEN', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C0704', 'CT LIVER', 'CT', '', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C0705', 'CT PANCREAS', 'CT', '', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C0706', 'CT KIDNEY', 'CT', 'ABDOMEN', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C0707', 'CT PROSTATE', 'CT', '', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C0708', 'CT COLONOSCOPY', 'CT', '', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C0709', 'CT PERFUSION OF ABDOMINAL ORGAN (ONLY)', 'CT', '', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C0801', 'CT SHOULDER', 'CT', 'SHOULDER', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C0802', 'CT HUMERUS', 'CT', 'UPPER EXTREMITY', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C1203', 'CTA LIVER DONOR (ONLY)', 'CT', '', 5000, 0, 1000, 60, '0', '', 0),
+('THAIRIS', 'C1204', 'CTA LIVER (ONLY)', 'CT', '', 5000, 0, 1000, 60, '0', '', 0),
+('THAIRIS', 'C1205', 'CTA CAELIAC /SMA /IMA (ONLY)', 'CT', '', 5000, 0, 1000, 60, '0', '', 0),
+('THAIRIS', 'C1301', 'CTA RENAL DIALYSIS SHUNT EVALUATION (ONLY)', 'CT', '', 5000, 0, 1000, 60, '0', '', 0),
+('THAIRIS', 'C1302', 'CTA HUMERUS (ONLY)', 'CT', 'UPPER EXTREMITY', 5000, 0, 1000, 60, '0', '', 0),
+('THAIRIS', 'C1303', 'CTA PERIPHERAL  RUN OFF (ONLY)', 'CT', '', 5000, 0, 1000, 60, '0', '', 0),
+('THAIRIS', 'C1401', 'CT-SCREENING LUNG CANCER(LOW DOSE)', 'CT', '', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C1402', 'CT-SCREENING ACUTE ABDOMEN ', 'CT', 'ABDOMEN', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C1403', 'CT-SCREENING LIVER CANCER', 'CT', '', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C1404', 'CT-SCREENING KUB STONE', 'CT', 'ABDOMEN', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C1405', 'CT-SCREENING PARANASAL SINUSES', 'CT', 'HEAD', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C1501', 'CT TOTAL BODY TRAUMA', 'CT', '', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C1502', 'CT BRAIN TRAUMA', 'CT', 'HEAD', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C1503', 'CT CERVICAL SPINES TRAUMA', 'CT', 'SPINE', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C1504', 'CT THORACIC SPINE TRAUMA', 'CT', 'SPINE', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C1505', 'CT THORACOLUMBAR SPINE TRAUMA', 'CT', 'SPINE', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C1506', 'CT LUMBROSACRAL SPINE TRAUMA', 'CT', 'SPINE', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C1507', 'CT SACRUM TRAUMA', 'CT', '', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C1508', 'CT WHOLE SPINE TRAUMA', 'CT', 'SPINE', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C1509', 'CT THORAX TRAUMA', 'CT', '', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C1510', 'CT ABDOMINAL TRAUMA', 'CT', '', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C1511', 'CT UPPER EXTREMITY TRAUMA', 'CT', '', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'C1512', 'CT LOWER EXTREMITY TRAUMA', 'CT', '', 5000, 0, 1000, 15, '0', '', 0),
+('THAIRIS', 'E0101', 'SHOULDER-RT(AP)', 'XRAY', 'SHOULDER', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'E0102', 'SHOULDER-LT(AP)', 'XRAY', 'SHOULDER', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'E0103', 'SHOULDER-BOTH(AP)', 'XRAY', 'SHOULDER', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'E0104', 'SHOULDER-RT( INT, EXT ROTATION)', 'XRAY', 'SHOULDER', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'E0105', 'SHOULDER-LT( INT, EXT ROTATION)', 'XRAY', 'SHOULDER', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'E0106', 'SHOULDER-RT(TRANSAXILLA)', 'XRAY', 'SHOULDER', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'E0107', 'SHOULDER-LT(TRANSAXILLA)', 'XRAY', 'SHOULDER', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'E0108', 'SHOULDER-RT(TRANSCAPULAR)', 'XRAY', 'SHOULDER', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'E0109', 'SHOULDER-LT(TRANSCAPULAR)', 'XRAY', 'SHOULDER', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'E0110', 'SHOULDER-RT(AP, TRANSAXILLA)', 'XRAY', 'SHOULDER', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'E0111', 'SHOULDER-LT(AP, TRANSAXILLA)', 'XRAY', 'SHOULDER', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'E0112', 'SHOULDER-RT(AP, TRANSCAPULAR)', 'XRAY', 'SHOULDER', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'E0113', 'SHOULDER-LT(AP, TRANSCAPULAR)', 'XRAY', 'SHOULDER', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'E0114', 'SHOULDER-RT(AP,TRANSAXILLA,TRANSCAPULAR)', 'XRAY', 'SHOULDER', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'E0115', 'SHOULDER-LT(AP,TRANSAXILLA,TRANSCAPULAR)', 'XRAY', 'SHOULDER', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'E0116', 'SHOULDER-RT(AP CAUDAL 30 DEGREE)', 'XRAY', 'SHOULDER', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'E0303', 'FOREARM-RT(LAT)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'E0304', 'FOREARM-LT(LAT)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'E0305', 'FOREARM-RT(AP, LAT)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'E0306', 'FOREARM-LT(AP, LAT)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'E0307', 'FOREARM-BOTH(AP)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'E0308', 'FOREARM INCLUDE ELBOW-RT(AP, LAT)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'E0309', 'FOREARM INCLUDE ELBOW-LT(AP, LAT)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'E0401', 'ELBOW-RT(AP)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'E0402', 'ELBOW-LT(AP)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'E0403', 'ELBOW-RT(LAT)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'E0404', 'ELBOW-LT(LAT)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'E0405', 'ELBOW-RT(AP, LAT)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'E0406', 'ELBOW-LT(AP, LAT)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'E0407', 'ELBOW-RT(OBLIQUE INT,EXT ROTATION)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'E0408', 'ELBOW-LT(OBLIQUE INT,EXT ROTATION)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'E0501', 'WRIST-RT(AP)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'E0502', 'WRIST-LT(AP)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'E0503', 'WRIST-BOTH(AP)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'E0504', 'WRIST-RT(LAT)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'E0505', 'WRIST-LT(LAT)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'E0506', 'WRIST-BOTH(LAT)(H) ', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'E0507', 'WRIST-RT(AP, LAT)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'E0508', 'WRIST-LT(AP, LAT)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'E0509', 'WRIST-LT(AP, LAT,ULNAR DEVIATION)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'E0510', 'WRIST-RT(AP, LAT,ULNAR DEVIATION)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'E0511', 'CARPAL SERIES-RT(AP, LAT, BOTH OBLIQUE)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'E0512', 'CARPAL SERIES-LT(AP, LAT, BOTH OBLIQUE)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'E0513', 'CARPAL TUNNEL-RT(TANGENTIAL)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'E0514', 'CARPAL TUNNEL-LT(TANGENTIAL)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'E0515', 'CARPAL BRIDGE-RT(TANGENTIAL)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'E0516', 'CARPAL BRIDGE-LT(TANGENTIAL)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'E0601', 'HAND-RT(AP)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'E0602', 'HAND-LT(AP)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'E0603', 'HAND-BOTH(AP)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'E0604', 'HAND-RT(LAT)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'E0605', 'HAND-LT(LAT)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'E0606', 'HAND-RT(AP,OBLIQUE)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'E0607', 'HAND-LT(AP,OBLIQUE)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'E0608', 'HAND-RT(AP, LAT)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'E0609', 'HAND-LT(AP, LAT)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'E0610', 'HAND-BOTH(AP OBLIQUE BILAT)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'E0701', 'THUMB FINGER-RT(AP, LAT)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'E0702', 'THUMB FINGER-LT(AP, LAT)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'E0801', 'INDEX FINGER-RT(AP, LAT)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'E0802', 'INDEX FINGER-LT(AP, LAT)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'E0901', 'MIDDLE FINGER-RT(AP, LAT)', 'XRAY', 'UPPER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'H0114', 'SKULL(SUBMENTOVERTEX, LAT)', 'XRAY', 'HEAD', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'H0201', 'PARANASAL SINUSES(CALDWELL, WATER''S)', 'XRAY', 'HEAD', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'H0202', 'PARANASAL SINUSES(LAT)', 'XRAY', 'HEAD', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'H0301', 'ORBITS(CALDWELL)', 'XRAY', 'HEAD', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'H0302', 'ORBITS(SEMI WATER''S)', 'XRAY', 'HEAD', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'H0303', 'ORBITS(LAT)', 'XRAY', 'HEAD', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'H0304', 'ORBITS(CALDWELL, SEMIWATER''S)', 'XRAY', 'HEAD', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'H0305', 'ORBITS FOR FOREIGN BODY', 'XRAY', 'HEAD', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'H0306', 'OPTIC  FORAMINA(RHESE''S )', 'XRAY', '', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'H0401', 'IAC(PA, STENVER''S, TOWNE''S)', 'XRAY', '', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'H0501', 'SELLA TURCICA(TOWNE''S, LAT)', 'XRAY', '', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'H0601', 'MASTOID AIR CELLS(LAT, TOWNE''S)', 'XRAY', '', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'H0602', 'MASTOID AIR CELLS(OBLIQUE)', 'XRAY', '', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'H0701', 'T-M JOINT(OBLIQUE OPEN&CLOSE MOUTH)', 'XRAY', '', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'H0702', 'T-M JOINT(TOWNE''S)', 'XRAY', '', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'H0801', 'STYLOID PROCESS(PA, LAT)', 'XRAY', '', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'H0901', 'NASAL BONE(WATER''S)', 'XRAY', 'HEAD', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'H0902', 'NASAL BONE(LAT)', 'XRAY', 'HEAD', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'H0903', 'NASAL BONE(WATER''S , LAT)', 'XRAY', 'HEAD', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'H1001', 'MAXILAR(SEMI-WATER''S)', 'XRAY', '', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'H1002', 'MAXILAR(PA)', 'XRAY', '', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'H1003', 'MAXILAR(PA, SEMI-WATER''S)', 'XRAY', '', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'H1101', 'MANDIBLE(PA)', 'XRAY', '', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'H1102', 'MANDIBLE(TOWNE''S)', 'XRAY', '', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'H1103', 'MANDIBLE(OBLIQUE)', 'XRAY', '', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'H1104', 'MANDIBLE-RT(PA, OBLIQUE)', 'XRAY', '', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'H1105', 'MANDIBLE-LT(PA, OBLIQUE)', 'XRAY', '', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'H1106', 'MANDIBLE(PA, BOTH OBLIQUE, TOWNE''S)', 'XRAY', '', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'H1201', 'ZYGOMATIC(SUBMENTOVERTEX)', 'XRAY', '', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'H1202', 'ZYGOMATIC(TOWNE''S)', 'XRAY', '', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'H1203', 'ZYGOMATIC(OBLIQUE TANGENTIAL)', 'XRAY', '', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'H1204', 'ZYGOMATIC(SUBMENTOVERTEX, TOWNE''S)', 'XRAY', '', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'H1301', 'NASOPHARYNX(LAT, SUBMENTOVERTEX)', 'XRAY', '', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'H1401', 'ADENOID(LAT)', 'XRAY', '', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'H1501', 'NECK(AP)', 'XRAY', '', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'H1502', 'NECK(LAT)', 'XRAY', '', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'H1503', 'NECK(AP, LAT)', 'XRAY', '', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'H1504', 'NECK(LAT SOFT TISSUE)', 'XRAY', '', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0101', 'HIP-RT(AP)', 'XRAY', 'PELVIS', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0102', 'HIP-LT(AP)', 'XRAY', 'PELVIS', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0103', 'HIP-BOTH(AP)', 'XRAY', 'PELVIS', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0104', 'HIP-RT(LAT)', 'XRAY', 'PELVIS', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0105', 'HIP-LT(LAT)', 'XRAY', 'PELVIS', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0106', 'HIP-BOTH(LAT)', 'XRAY', 'PELVIS', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0107', 'HIP-RT(AP, LAT)', 'XRAY', 'PELVIS', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0108', 'HIP-LT(AP, LAT)', 'XRAY', 'PELVIS', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0109', 'HIP-RT(LAT CROSSTABLE)', 'XRAY', 'PELVIS', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0110', 'HIP-LT(LAT CROSSTABLE)', 'XRAY', 'PELVIS', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0111', 'HIP-RT(AP,LAT CROSSTABLE)', 'XRAY', 'PELVIS', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0205', 'FEMUR-LT(LAT)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0206', 'FEMUR-BOTH(LAT)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0207', 'FEMUR-RT(AP, LAT)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0208', 'FEMUR-LT(AP, LAT)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0209', 'FEMUR INCLUDE KNEE -RT(AP, LAT)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0210', 'FEMUR INCLUDE KNEE -LT(AP, LAT)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0301', 'KNEE-RT(AP)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0302', 'KNEE-LT(AP)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0303', 'KNEE-BOTH(AP)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0304', 'KNEE-BOTH(AP STANDING)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0305', 'KNEE-RT(LAT)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0306', 'KNEE-LT(LAT)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0307', 'KNEE-BOTH(LAT)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0308', 'KNEE-RT(LAT STANDING)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0309', 'KNEE-LT(LAT STANDING)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0310', 'KNEE-BOTH(LAT STANDING)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0311', 'KNEE-RT(AP, LAT)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0312', 'KNEE-LT(AP, LAT)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0313', 'KNEE-RT(AP, LAT STANDING)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0314', 'KNEE-LT(AP, LAT STANDING)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0315', 'KNEE-BOTH(AP, LAT STANDING)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0316', 'KNEE-RT(MERCHANT)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0317', 'KNEE-LT(MERCHANT)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0318', 'KNEE-RT(LAURIN)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0319', 'KNEE-LT(LAURIN)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0320', 'KNEE-RT(HUGHSTON)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0321', 'KNEE-LT(HUGHSTON)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0322', 'KNEE(ORTHROSCANOGRAM)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0323', 'KNEE BOTH(AP STANDING,LAT FLEX 45 )', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0324', 'KNEE BOTH(AP ,LAT)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0325', 'KNEE RT(AP STANDING)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0326', 'KNEE LT(AP STANDING)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0327', 'KNEE RT(AP,LAT,SKYLINE)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0328', 'KNEE LT(AP,LAT,SKYLINE)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0329', 'KNEE BOTH(AP,LAT,SKYLINE)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0330', 'KNEE-RT(LAT FLEX45)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0331', 'KNEE-LT(LAT FLEX45)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0401', 'PATELLA-RT(SKYLINE OR SUN RISE)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0402', 'PATELLA-LT(SKYLINE OR SUN RISE)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0403', 'PATELLA-RT(AP, LAT, SKYLINE OR SUN RISE)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0611', 'ANKLE-LT( VARUS STRESS)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0612', 'ANKLE-RT(AP, LAT)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0613', 'ANKLE-LT(AP, LAT)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0614', 'ANKLE-RT(AP, LAT, MORTISE)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0615', 'ANKLE-LT(AP, LAT, MORTISE)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0616', 'ANKLE-RT(OBLIQUE)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0617', 'ANKLE-LT(OBLIQUE)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0618', 'ANKLE-RT(AP,LAT,OBLIQUE)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0619', 'ANKLE-LT(AP,LAT,OBLIQUE)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0701', 'FOOT-RT(AP)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0702', 'FOOT-LT(AP)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0703', 'FOOT-BOTH(AP)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0704', 'FOOT-RT(LAT)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0705', 'FOOT-LT(LAT)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0706', 'FOOT-BOTH(LAT)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0707', 'FOOT-RT(OBLIQUE)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0708', 'FOOT-LT(OBLIQUE)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0709', 'FOOT-BOTH(OBLIQUE)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'L0710', 'FOOT-RT(AP, LAT)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0711', 'FOOT-LT(AP, LAT)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0712', 'FOOT-BOTH(AP, LAT)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0713', 'FOOT-RT(AP, OBLIQUE)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0714', 'FOOT-LT(AP, OBLIQUE)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0715', 'FOOT-BOTH(AP,OBLIQUE)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0716', 'FOOT-RT-WEIGHT-BEARING(AP, LAT STANDING)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0717', 'FOOT-LT-WEIGH-BEARING(AP, LAT STANDING)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0718', 'FOOT-BOTH-WEIGHT-BEARING(AP, LAT STAND)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0801', 'BIG TOE-RT(AP, LAT)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0802', 'BIG TOE-RT(AP, OBLIQUE)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0803', 'BIG TOE-LT(AP, LAT)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0804', 'BIG TOE-LT(AP, OBLIQUE)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0901', 'SECOND TOE-RT(AP, LAT)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0902', 'SECOND TOE-RT(AP, OBLIQUE)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0903', 'SECOND TOE-LT(AP, LAT)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L0904', 'SECOND TOE-LT(AP, OBLIQUE)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L1001', 'THIRD TOE-RT(AP, LAT)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L1002', 'THIRD TOE-RT(AP, OBLIQUE)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L1003', 'THIRD TOE-LT(AP, LAT)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'L1004', 'THIRD TOE-LT(AP, OBLIQUE)', 'XRAY', 'LOWER EXTREMITY', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'M0101', 'MRI-BRAIN', 'MRI', 'HEAD', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0102', 'MRI-BRAINIAC', 'MRI', 'HEAD', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0103', 'MRI-BRAIN+PITUITARY GLAND', 'MRI', 'HEAD', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0104', 'MRI-BRAIN NAVIGATOR', 'MRI', 'HEAD', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0105', 'MRI-STROKE PACKAGE', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0106', 'MR-PERFUSION BRAIN', 'MRI', 'HEAD', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0107', 'MRI-BRAIN+PERFUSION', 'MRI', 'HEAD', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0108', 'MRI-FOR EPILEPSY', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0109', 'MRI-FOR DEMENTIA', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0110', 'MRI-BASE OF SKULL', 'MRI', 'HEAD', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0111', 'MRI-CAVERNOUS SINUS', 'MRI', 'HEAD', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0112', 'MRI-IAC(ONLY)', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0113', 'MRI-CN V', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0114', 'MRI-PITUITARY GLAND', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0115', 'MRI-CSF FLOW (ONLY)', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0116', 'MRI-BRAIN+CSF FLOW', 'MRI', 'HEAD', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0117', 'MRI-CISTERNOGRAM (ONLY)', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0118', 'MRI-BRAIN+CISTERNOGRAM', 'MRI', 'HEAD', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0119', 'MR SRT or SRS (ONLY)', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0120', 'MR-TRACTOGRAPHY', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0121', 'MRI-BRAIN+ORBITS', 'MRI', 'HEAD', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0201', 'MRI-ORBITS.', 'MRI', 'HEAD', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0311', 'MRI-BRACHIAL PLEXUS (NEURO)', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0312', 'MRI-SCREENING SPINE', 'MRI', 'SPINE', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0313', 'MRI-LUMBAR PLEXUS', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0314', 'MRI-SACRAL PLEXUS', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0401', 'MRI-CHEST/THORAX', 'MRI', 'CHEST', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0402', 'MRI-MEDIASTINUM', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0403', 'MRI-BILIARY SYSTEM(MRCP)', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0404', 'MRI-UPPER ABDOMEN', 'MRI', 'ABDOMEN', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0405', 'MRI-UPPER ABDOMEN+MRCP', 'MRI', 'ABDOMEN', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0406', 'MRI-LOWER ABDOMEN OR PELVIS', 'MRI', 'PELVIS', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0407', 'MRI-WHOLE ABDOMEN', 'MRI', 'ABDOMEN', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0408', 'MRI-LIVER', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0409', 'MRI-PANCREASE', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0410', 'MRI-ADRENAL GLAND', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0411', 'MRI-KIDNEY', 'MRI', 'ABDOMEN', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0412', 'MRI-PROSTATE GLAND', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0413', 'MRI-PROSTATE GLAND+ENDORECTAL COIL', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0414', 'MRI-PROSTATE CA  EVALATION', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0415', 'MRI-PELVIC CAVITY', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0416', 'MRI-PYELOGRAM', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0501', 'MRI-HEART COMPLETE', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0502', 'MRI-SCREENING CORONARY', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0503', 'MRI-HEART PERFUSION (ONLY)', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0504', 'MRI-Congenital Heart Disease', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0505', 'MRI-HEART (Limited) (Case ASD Screening)', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0506', 'MRI-HEART+ Cine', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0);
+INSERT INTO `xray_code` (`CENTER`, `XRAY_CODE`, `DESCRIPTION`, `XRAY_TYPE_CODE`, `BODY_PART`, `CHARGE_TOTAL`, `PORTABLE_CHARGE`, `DF`, `TIME_USE`, `BIRAD_FLAG`, `PREP_ID`, `DELETE_FLAG`) VALUES
+('THAIRIS', 'M0601', 'MRI-BREAST UNILATERAL', 'MRI', 'BREAST', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0602', 'MRI-BREAST BILATERAL', 'MRI', 'BREAST', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0603', 'MRI-GUIDE BREAST BIOPSY PROCEDURE', 'MRI', 'BREAST', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0701', 'MRI-CLAVICLE', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0702', 'MR ARTHROGRAPHY', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0703', 'MRI-SHOULDER-RT', 'MRI', 'SHOULDER', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0704', 'MRI-SHOULDER-LT', 'MRI', 'SHOULDER', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0705', 'MRI-HUMERUS-RT', 'MRI', 'UPPER EXTREMITY', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0706', 'MRI-HUMERUS-LT', 'MRI', 'UPPER EXTREMITY', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0707', 'MRI-ELBOW-RT', 'MRI', 'UPPER EXTREMITY', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0708', 'MRI-ELBOW-LT', 'MRI', 'UPPER EXTREMITY', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0709', 'MRI-FOREARM-RT', 'MRI', 'UPPER EXTREMITY', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0710', 'MRI-FOREARM-LT', 'MRI', 'UPPER EXTREMITY', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0711', 'MRI-WRIST-RT', 'MRI', 'UPPER EXTREMITY', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0712', 'MRI-WRIST-LT', 'MRI', 'UPPER EXTREMITY', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0806', 'MRA-THORACIC AORTA (ONLY)', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0807', 'MRA-ABDOMINAL AORTA (ONLY)', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0808', 'MRA-WHOLE AORTA (ONLY)', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0809', 'MRA-ABDOMEN (ONLY)', 'MRI', 'ABDOMEN', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0810', 'MRA-HEPATIC ARTERY(ONLY)', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0811', 'MRA-RENAL ARTERY(ONLY)', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0812', 'MRA-CERVICAL SPINE', 'MRI', 'SPINE', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0813', 'MRA-CERVICOTHORACIC SPINE', 'MRI', 'SPINE', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0814', 'MRA-THORACIC SPINE', 'MRI', 'SPINE', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0815', 'MRA-THORACOLUMBAR SPINE', 'MRI', 'SPINE', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0816', 'MRA-LUMBOSACRAL SPINE', 'MRI', 'SPINE', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0817', 'MRA-UPPER EXTREMITY-RT(ONLY)', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0818', 'MRA-UPPER EXTREMITY-LT(ONLY)', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0819', 'MRA-LOWER EXTREMITY-RT(ONLY)', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0820', 'MRA-LOWER EXTREMITY-LT(ONLY)', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0821', 'MRA PERIPERAL RUN-OFF(ONLY)', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M0822', 'MRA-OTHER(SEE NOTE)', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M1307', 'MR-SPECTROSCOPY-LIVER (ONLY)', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M1308', 'MRI+MR-SPECTROSCOPY-LIVER', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M1309', 'MR-SPECTROSCOPY-MUSCLE (ONLY)', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M1310', 'MR SPECTROSCOPY(ONLY) OTHER', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M1401', 'FUNCTIONAL MRI (ONLY)', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'M1501', 'MRI-OTHER(SEE NOTE)', 'MRI', '', 20000, 0, 5000, 30, '0', '', 0),
+('THAIRIS', 'MM101', 'MAMMOGRAM-RT', 'MAMMO', 'BREAST', 3000, 0, 1000, 20, '1', '', 0),
+('THAIRIS', 'MM102', 'MAMMOGRAM-LT', 'MAMMO', 'BREAST', 3000, 0, 1000, 20, '1', '', 0),
+('THAIRIS', 'MM103', 'MAMMOGRAM-BOTH', 'MAMMO', 'BREAST', 3000, 0, 1000, 30, '1', '', 0),
+('THAIRIS', 'MM104', 'MAMMOGRAM-IMPLANTATION', 'MAMMO', 'BREAST', 3000, 0, 1000, 30, '1', '', 0),
+('THAIRIS', 'MM105', 'MAMMOGRAM-SPECIMEN', 'MAMMO', 'BREAST', 3000, 0, 1000, 20, '1', '', 0),
+('THAIRIS', 'S0101', 'ODENTOID PROCESS (OPEN MOUTH)', 'XRAY', '', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'S0201', 'C-SPINE(AP)', 'XRAY', 'SPINE', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'S0202', 'C-SPINE(LAT)', 'XRAY', 'SPINE', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'S0203', 'C-SPINE(AP, LAT)', 'XRAY', 'SPINE', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'S0204', 'C-SPINE(AP, LAT, OPEN MOUTH)', 'XRAY', 'SPINE', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'S0205', 'C-SPINE(AP, LAT, BOTH OBLIQUE)', 'XRAY', 'SPINE', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'S0206', 'C-SPINE FLEXION, EXTENSION', 'XRAY', 'SPINE', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'S0207', 'C-SPINE(BOTH OBLIQUE)', 'XRAY', 'SPINE', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'S0301', 'C-T-SPINE(AP)', 'XRAY', 'SPINE', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'S0302', 'C-T-SPINE(LAT)', 'XRAY', 'SPINE', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'S0303', 'C-T-SPINE(SWIMER''S)', 'XRAY', 'SPINE', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'S0304', 'C-T-SPINE(AP, LAT)', 'XRAY', 'SPINE', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'S0305', 'C-T-SPINE(AP, LAT, BOTH OBLIQUE)', 'XRAY', 'SPINE', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'S0401', 'T-SPINE(AP)', 'XRAY', 'SPINE', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'S0402', 'T-SPINE(LAT)', 'XRAY', 'SPINE', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'S0403', 'T-SPINE(AP, LAT)', 'XRAY', 'SPINE', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'S0404', 'T-SPINE(BOTH OBLIQUE)', 'XRAY', 'SPINE', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'S0405', 'T-SPINE(AP, LAT, BOTH OBLIQUE)', 'XRAY', 'SPINE', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'S0406', 'T-SPINE STANDING(AP)', 'XRAY', 'SPINE', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'S0407', 'T-SPINE STANDING(LAT)', 'XRAY', 'SPINE', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'S0408', 'T-SPINE STANDING(AP, LAT)', 'XRAY', 'SPINE', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'S0409', 'T-SPINE STANDING(AP, LAT, BOTH OBLIQUE)', 'XRAY', 'SPINE', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'S0410', 'T-SPINE(FLEXION, EXTENSION)', 'XRAY', 'SPINE', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'S0501', 'T-L SPINE(AP)', 'XRAY', 'SPINE', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'S0609', 'L-S SPINE STANDING(BOTH OBLIQUE)', 'XRAY', 'SPINE', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'S0610', 'L-S SPINE STANDING(AP,LAT,BOTH OBLIQUE)', 'XRAY', 'SPINE', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'S0611', 'L-S SPINE STANDING(BENDING)', 'XRAY', 'SPINE', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'S0612', 'L-S SPINE(FLEXION, EXTENSION)', 'XRAY', 'SPINE', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'S0613', 'WHOLE SPINE(AP)(SCOLIOTIC)', 'XRAY', 'SPINE', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'S0614', 'WHOLE SPINE(AP,LAT)(SCOLIOTIC)', 'XRAY', 'SPINE', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'S0701', 'SACRUM(AP)', 'XRAY', '', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'S0702', 'SACRUM(LAT)', 'XRAY', '', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'S0703', 'SACRUM(AP, LAT)', 'XRAY', '', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'S0801', 'S-I JOINT(AP)', 'XRAY', '', 200, 0, 90, 10, '0', '', 0),
+('THAIRIS', 'S0802', 'S-I JOINT-RT(AP, OBLIQUE)', 'XRAY', '', 200, 0, 90, 15, '0', '', 0),
+('THAIRIS', 'U0114', 'US.BLADDER', 'US', '', 2000, 0, 500, 30, '0', '', 0),
+('THAIRIS', 'U0115', 'US.SCROTUM OR TESTIS', 'US', '', 2000, 0, 500, 30, '0', '', 0),
+('THAIRIS', 'U0116', 'US.PROSTATE', 'US', '', 2000, 0, 500, 30, '0', '', 0),
+('THAIRIS', 'U0117', 'US.FOLLICLE', 'US', '', 2000, 0, 500, 30, '0', '', 0),
+('THAIRIS', 'U0118', 'US.ADRENAL GLAND', 'US', '', 2000, 0, 500, 30, '0', '', 0),
+('THAIRIS', 'U0119', 'US.APPENDIX', 'US', '', 2000, 0, 500, 30, '0', '', 0),
+('THAIRIS', 'U0120', 'US.TRANSPLANT KIDNEY BOTH SIDE', 'US', 'ABDOMEN', 2000, 0, 500, 30, '0', '', 0),
+('THAIRIS', 'U0121', 'US.TRANSPLANT KIDNEY ONE SIDE', 'US', 'ABDOMEN', 2000, 0, 500, 30, '0', '', 0),
+('THAIRIS', 'U0122', 'US.TRANSRECTAL', 'US', '', 2000, 0, 500, 30, '0', '', 0),
+('THAIRIS', 'U0123', 'US.OBSTETRICS', 'US', '', 2000, 0, 500, 30, '0', '', 0),
+('THAIRIS', 'U0124', 'US.AMNIOCENTASIS', 'US', '', 2000, 0, 500, 30, '0', '', 0),
+('THAIRIS', 'U0125', 'US.OBSTETRICS For Kid', 'US', '', 2000, 0, 500, 30, '0', '', 0),
+('THAIRIS', 'U0301', 'US.OTHER', 'US', '', 5000, 0, 1000, 30, '0', '', 0),
+('THAIRIS', 'U0302', 'US.MASS', 'US', '', 5000, 0, 1000, 30, '0', '', 0),
+('THAIRIS', 'U0401', 'ULTRASOUND 4D', 'US', '', 5000, 0, 1000, 30, '0', '', 0),
+('THAIRIS', 'X0101', 'SIALOGRAM', 'FLUORO', '', 2000, 0, 500, 90, '0', '', 0),
+('THAIRIS', 'X0102', 'MYELOGRAM', 'FLUORO', '', 2000, 0, 500, 90, '0', '', 0),
+('THAIRIS', 'X0103', 'ERCP', 'FLUORO', '', 2000, 0, 500, 30, '0', '', 0),
+('THAIRIS', 'X0104', 'UGI', 'FLUORO', '', 2000, 0, 500, 30, '0', '', 0),
+('THAIRIS', 'X0105', 'LONG GI', 'FLUORO', '', 2000, 0, 500, 30, '0', '', 0),
+('THAIRIS', 'X0106', 'BARIUM SWALLOW', 'FLUORO', '', 2000, 0, 500, 30, '0', '', 0),
+('THAIRIS', 'X0107', 'BARIUM SWALLOW, GI', 'FLUORO', '', 2000, 0, 500, 30, '0', '', 0),
+('THAIRIS', 'X0108', 'BE ( DOUBLE AIR CONTRAST)', 'FLUORO', '', 2000, 0, 500, 30, '0', '', 0),
+('THAIRIS', 'X0109', 'BE ( SINGLE CONTRAST)', 'FLUORO', '', 2000, 0, 500, 30, '0', '', 0),
+('THAIRIS', 'X0110', 'IVP ', 'FLUORO', '', 2000, 0, 500, 30, '0', '', 0),
+('THAIRIS', 'X0111', 'RAPID SEQUENCE IVP', 'FLUORO', '', 2000, 0, 500, 30, '0', '', 0),
+('THAIRIS', 'X0112', 'VOIDING CYSTOGRAM', 'FLUORO', '', 2000, 0, 500, 30, '0', '', 0),
+('THAIRIS', 'X0113', 'RETROGRADE URETHOGRAM', 'FLUORO', '', 2000, 0, 500, 30, '0', '', 0),
+('THAIRIS', 'X0114', 'RETROGRADE PYELOGRAM', 'FLUORO', '', 2000, 0, 500, 30, '0', '', 0),
+('THAIRIS', 'X0115', 'HYSTEROSALPINGOGRAM', 'FLUORO', '', 2000, 0, 500, 30, '0', '', 0),
+('THAIRIS', 'X0116', 'T-TUBE CHOLANGIOGRAM', 'FLUORO', '', 2000, 0, 500, 30, '0', '', 0),
+('THAIRIS', 'X0117', 'FISTULOGRAM', 'FLUORO', '', 2000, 0, 500, 30, '0', '', 0),
+('THAIRIS', 'XRTX0304', 'PEIT', 'ANGIO', '', 30000, 0, 10000, 30, '0', '', 0),
+('THAIRIS', 'XRTX0305', 'PCN ', 'ANGIO', '', 30000, 0, 10000, 30, '0', '', 0),
+('THAIRIS', 'XRTX0306', 'RFA', 'ANGIO', '', 30000, 0, 10000, 30, '0', '', 0),
+('THAIRIS', 'XRTX0307', 'EMBOLIZATION', 'ANGIO', '', 30000, 0, 10000, 60, '0', '', 0),
+('THAIRIS', 'XRTX0308', 'ANGILOPLASTY', 'ANGIO', '', 30000, 0, 10000, 60, '0', '', 0),
+('THAIRIS', 'XRTX0602', 'LOCALIZATION BREAST-LT', 'ANGIO', 'BREAST', 30000, 0, 10000, 30, '0', '', 0),
+('THAIRIS', 'XRTX0603', 'LOCALIZATION LUNG', 'ANGIO', '', 30000, 0, 10000, 30, '0', '', 0),
+('THAIRIS', 'XRTX0604', 'LOCALIZATION LIVER', 'ANGIO', '', 30000, 0, 10000, 30, '0', '', 0),
+('THAIRIS', 'XRTX0605', 'LOCALIZATION KIDNEY-RT', 'ANGIO', 'ABDOMEN', 30000, 0, 10000, 30, '0', '', 0),
+('THAIRIS', 'XRTX0606', 'LOCALIZATION KIDNEY-LT', 'ANGIO', 'ABDOMEN', 30000, 0, 10000, 30, '0', '', 0),
+('THAIRIS', 'XRTX0607', 'LOCALIZATION  OTHER', 'ANGIO', '', 30000, 0, 10000, 30, '0', '', 0),
+('THAIRIS', 'XRTX0701', 'DUCTOGRAM BREAST-RT', 'ANGIO', 'BREAST', 30000, 0, 10000, 30, '0', '', 0),
+('THAIRIS', 'XRTX0702', 'DUCTOGRAM BREAST-LT', 'ANGIO', 'BREAST', 30000, 0, 10000, 30, '0', '', 0),
+('THAIRIS', '10046', 'ct  scan', 'CT', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '1040', 'ADDITIONAL MULTIPHASE', 'CT', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '1041', 'ADDITIONAL SUFACE 3D VIEWS', 'CT', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '1019', 'CT LOWER ABDOMEN', 'CT', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '1020', 'CT ORBIT', 'CT', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '1024', 'CT THYROID', 'CT', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '1025', 'CT WHOLE ABDOMEN+NONIONIC CONTRAST', 'CT', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '1026', 'CT WHOLE ABDOMEN ( SCREENING )', 'CT', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '1027', 'CT WHOLE ABDOMEN + CT COLONOSCOPY', 'CT', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '1028', 'CTA BRAIN', 'CT', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '1029', 'CTA CAROTID ARTERY', 'CT', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '1030', 'CTA PULMONARY ARTERY', 'CT', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '1031', 'CTA RENAL ARTERY', 'CT', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '1032', 'CTA THORACIC AORTA', 'CT', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '1033', 'CTA ABDOMINAL AORTA', 'CT', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '1034', 'CTA WHOLE AORTA', 'CT', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '1035', 'CTA FEMORAL ARTERY', 'CT', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '1036', 'CTA LOWER EXTERMITY', 'CT', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '2014', 'MRI T-SPINE', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '2015', 'MRI L-S SPINE', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '2017', 'MRI HEART + PERFUSION', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '2018', 'MRI HEART+STRESS TEST', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '2022', 'MRI LIVER WITH DOUBLE CONTRAST', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '2023', 'MRI LOWER ABDOMEN', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '2025', 'MRI NECK', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '2026', 'MRI ORBIT', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '2027', 'MRI PARANASAL SINUSES', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '2028', 'MRI PITUITARY GLAND', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '2029', 'MRI PROSTATE GLAND', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '2030', 'MRI PROSTATE SPECIAL COIL', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '2031', 'MRCP ', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '2032', 'MR SPECTROSCOPY', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '2033', 'MRI THYROID', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '2034', 'MRI UPPER ABDOMEN', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '2036', 'MRI UROGRAPHY', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '2037', 'MRI WHOLE ABDOMEN', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '2038', 'MRI WHOLE SPINES', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20087', 'MRI FOOT', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20122', 'MRI FUNCIONAL', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20062', 'MRI SHOULDER LT', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20069', 'MRI FACE', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20079', 'MRI LIVER', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20095', 'MRI  BREAST  RT.', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20097', 'MRI ADRENAL GLAND', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20124', 'MRI MRA (NONBRAIN)', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20125', 'MRI BRAIN + CSF FLOW', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20127', 'MRI BRACHIAL PLEXUS', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20060', 'MRA FEMERAL ARTERY', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20118', 'MRI WRIST LT', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20131', 'MRI OROPHARYNX', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20136', 'MRA UPPER /LOWER ABDOMEN', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20148', 'MRI  STERNUM', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20098', 'MRI HIPPOCAMPUS', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20128', 'MRI LS-PLEXUS', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20149', 'MRI CLAVICLE LT', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20146', 'MRI  CRANIAL  NERVE', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20068', 'MRI MRA MRV NECK', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20071', 'MRI CISTERNOGRAM', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20089', 'MRI CAVERNOUS  SINUS', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20126', 'MRI CRANIAL NERVE', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20133', 'MRI THYROID GLANDS', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20144', 'MRA BOTH LEG', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20145', 'MRI  HIP', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20120', 'MRI RT Scapular', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20053', 'MRI KNEE LT', 'MRI', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20055', 'MRI CONTRASTจำนวน 3 ขวด', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20057', 'MRI HAND RT', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20072', 'MRI ARM  RT', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20108', 'MRI ANKLE LT', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20110', 'MRA MAXILLA', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20121', 'MRI DIFFUSION /PERFUSION', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20123', 'MRV (ONE PART )', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20052', 'MRI KNEE RT', 'MRI', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20134', 'MRI MEDIASTINUM', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20135', 'MRI HEART CGHD/CINE', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20141', 'MR ARTHROGRAPHY', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '20152', 'MRI ELBOW LT', 'MRI', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '4001', 'ULTRASOUND DOPPLER LT. LEG', 'US', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '4002', 'ULTRASOUND DOPPLER CAROTID', 'US', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '4003', 'ULTRASOUND  DOPPLER RENAL', 'US', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '4005', 'ULTRASOUND KIDNEYS', 'US', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '4004', 'ULTRASOUND BREAST', 'US', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '4016', 'ULTRASOUND DOPPLER AORTA', 'US', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '40033', 'ULTRASOUND DOPPLER VEIN', 'US', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50139', 'Test FOR MESSAGE', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50140', 'ABDOMEN PRONE (PA)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50141', 'ABDOMEN LT. LATERAL DECUBITUS', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50142', 'ABDOMEN RT. LATERAL DECUBITUS', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50143', '', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50144', 'ABDOMEN RT. LATERAL DORSAL DECUBITUS', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50145', 'ABDOMEN LATERAL SUPINE', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50146', 'ABDOMEN UPRIGHT (AP)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50147', 'ABDOMEN LATERAL UPRIGHT', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50148', 'ANKLE BOTH (LATERAL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50149', 'ANKLE BOTH (OBLIQUE)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50150', 'ANKLE BOTH (MORTISE VIEW)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50152', 'ANKLE BOTH (AP)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50156', 'ANKLE BOTH (STRESS VIEW)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50157', 'ANKLE BOTH (AP, LATERAL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50158', 'HAND RT. (PA, LAT)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50159', 'ANKLE RT. (LATERAL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50161', 'ANKLE RT. (MORTISE VIEW)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50162', 'ANKLE RT.(STRESS VIEW)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50164', 'ANKLE LT. (LATERAL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50166', 'ANKLE LT. (MORTISE VIEW)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50167', 'ANKLE LT. (STRESS VIEW)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50168', 'COCCYX (LATERAL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50169', 'COCCYX (AP, LATERAL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50183', 'CALCANEUS LT. (LATERAL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50184', 'CALCANEUS BOTH (AXIAL VIEW)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50185', 'CALCANEUS BOTH (LATERAL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50186', 'CALCANEUS BOTH (AXIAL VIEW, LATERAL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50187', 'CHEST (LT.LATERAL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50188', 'CHEST (RT.OBLIQUE)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50189', 'CHEST (LT.OBLIQUE)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50190', 'CLAVICLE BOTH (AP)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50191', 'AC JOINT RT. (AP)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50192', 'AC JOINT LT. (AP)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50193', 'AC JOINT BOTH. (AP)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50194', 'AC JOINT WITH WEIGHT RT. (AP)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50195', 'AC JOINT WITH WEIGHT LT.(AP)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50196', 'AC JOINT WITH WEIGHTS BOTH (AP)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50197', 'ELBOW BOTH (AP)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50198', 'ELBOW BOTH (AP, LATERAL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50199', 'CHEST (AP UPRIGHT)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50200', 'ELBOW BOTH (JONES METHOD)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0);
+INSERT INTO `xray_code` (`CENTER`, `XRAY_CODE`, `DESCRIPTION`, `XRAY_TYPE_CODE`, `BODY_PART`, `CHARGE_TOTAL`, `PORTABLE_CHARGE`, `DF`, `TIME_USE`, `BIRAD_FLAG`, `PREP_ID`, `DELETE_FLAG`) VALUES
+('THAIRIS', '50201', 'ELBOW BOTH (COYLE METHOD)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50202', 'ELBOW RT. (AP)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50203', 'ELBOW RT. (LATERAL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50204', 'ELBOW RT. (AP, LATERAL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50206', 'ELBOW RT.(JONES METHOD)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50207', 'ELBOW RT.(COYLE METHOD)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50208', 'ELBOW LT. (LATERAL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50209', 'ELBOW LT. (AP, LATERAL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50210', 'FINGER LT. (PA, LATERAL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50211', 'ELBOW LT. (JONES METHOD)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50212', 'FEMUR BOTH INCLUDE KNEE (LATERAL)', 'XRAY', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50213', 'FEMUR BOTH (AP, LATERAL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50214', 'FEMUR RT. (AP)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50215', 'FEMUR RT. INCLUDE HIP (AP)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50001', 'ABDOMEN SUPINE (AP)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50002', 'ABDOMEN (SUPINE, UPRIGHT)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50003', 'ACUTE ABDOMEN SERIES', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50006', 'HAND LT. (PA,LAT)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50008', 'BONE AGE (LT.WRIST)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50011', 'C-SPINES (AP, LAT, BOTH OBLIQUES)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50014', 'C-SPINES (FLEXION, EXTENSION)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50016', 'CALCANEUS RT. (AXIAL VIEW, LATERAL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50018', 'CHEST (PA UPRIGHT)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50019', 'CHEST (RT.LATERAL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50053', 'HUMERUS RT.(AP,LAT)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50054', 'HUMERUS LT.(AP,LAT)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50056', 'KNEE RT. (AP,LAT)', 'XRAY', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50057', 'KNEE LT. (AP,LATERAL VIEW)', 'XRAY', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50058', 'KNEE BOTH (AP,LATERAL VIEW)', 'XRAY', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50064', 'LEG BOTH (AP,LAT)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50066', 'LEG LT. (AP,LAT)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50067', 'LONG BONE', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50069', 'L-S SPINES (BOTH OBL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50071', 'MANDIBLE (AP)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50072', 'MANDIBLE (AP,OBLIQUE)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50074', 'NECK (SOFT TISSUE LAT)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50075', 'MASTOID BOTH', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50076', 'MASTOID RT.', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50077', 'MASTIOID LT.', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50078', 'ORBIT BOTH', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50080', 'ORBIT LT.', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50082', 'PELVIS (INLET VIEW)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50085', 'PELVIS (JUDET VIEW)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50086', 'PELVIS (RIPSTEIN VIEW)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50088', 'SACRUM (AP , LAT)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50089', 'STERNUM (PA , LAT)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50093', 'SHOULDER LT. (AP)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50097', 'SHOULDER BOTH (SUPRASPINATUS OUTLET VIEW )', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50098', 'SHOULDER RT. (SUPRASPINATUS OUTLET VIEW )', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50099', 'SHOULDER LT. (SUPRASPINATUS OUTLET VIEW )', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50102', 'SHOULDER LT. (STRYKER NOTCH)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50104', 'SHOULDER RT. (AXILLARY VIEW)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50105', 'SHOULDER LT. (AXILLARY VIEW)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50106', 'SHOULDER BOTH (TRANSCAPULAR)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50108', 'SHOULDER LT. (TRANSCAPULAR)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50109', 'SHOULDER BOTH (WEST POINT)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50110', 'SHOULDER RT. (WEST POINT)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50111', 'SHOULDER LT. (WEST POINT)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50221', 'FEMUR LT. (LATERAL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50222', 'FEMUR LT. INCLUDE HIP (LATERAL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50223', 'FEMUR LT. INCLUDE KNEE (LATERAL)', 'XRAY', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50225', 'K.U.B.', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50226', 'L-S SPINES (AP)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50228', 'ADENOID GLAND', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50233', 'FOOT RT. (OBLIQUE )', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50234', 'FOOT RT. (LATERAL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50235', 'FEET BOTH (AP, OBLIQUE )', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50236', 'FEET BOTH (AP)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50237', 'FEET BOTH (OBLIQUE )', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50240', 'FOOT LT. (AP)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50242', 'FOOT LT. (LATERAL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50246', 'ANKLE LT. (AP, LATERAL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50248', 'CALCANEUS RT. (AXIAL VIEW)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50249', 'CALCANEUS RT. (LATERAL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50250', 'CALCANEUS LT. (AXIAL VIEW, LATERAL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50251', 'CHEST (AP SUPINE)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50252', 'CHEST (SEMI- UPRIGTH)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50253', 'FEMUR RT. (LATERAL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50254', 'FEMUR RT. INCLUDE HIP (LATERAL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50255', 'FEMUR RT. INCLUDE KNEE (LATERAL)', 'XRAY', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50256', 'FEMUR BOTH INCLUDE HIP (LATERAL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50257', 'FOOT RT. (AP)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50258', 'FOREARM RT.(AP)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50259', 'FOREARM RT.(LATERAL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50260', 'FOREARM BOTH (AP)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50261', 'FOREARMS BOTH (LATERAL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50263', 'FOREARM LT.(AP)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50264', 'FOREARM LT.(LATERAL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50266', 'HAND RT. (PA )', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50267', 'HAND RT. (OBLIQUE)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50269', 'HAND BOTH (PA )', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50270', 'HAND BOTH (OBLIQUE)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50272', 'HAND LT. (PA )', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50273', 'HAND LT. (OBLIQUE)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50275', 'HIP RT. (INTERNAL ROTATED)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50276', 'HIP RT. (EXTERNAL ROTATED)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50277', 'HIP BOTH (LATERAL CROSSTABLE)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50278', 'HIP BOTH  (FROG LEG)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50279', 'HIP BOTH  (INTERNAL ROTATED)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50280', 'HIP BOTH  (EXTERNAL ROTATED)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50282', 'HIP LT. (INTERNAL ROTATED)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50283', 'HIP LT. (EXTERNAL ROTATED)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50285', 'KNEE RT. (AP)', 'XRAY', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50286', 'KNEE RT. ( LAT)', 'XRAY', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50387', 'ANKLE RT. (AP)', 'XRAY', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50403', 'RIBS RT. (OBLIQUE)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50404', 'PELVIS (LAT)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50296', 'KNEE BOTH  (VALGUS)', 'XRAY', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50297', 'KNEE BOTH  (VARUS)', 'XRAY', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50298', 'KNEE BOTH  (ANTERIOR DRAWER STRESS)', 'XRAY', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50299', 'KNEE BOTH  (POSTERIOR DRAWER STRESS)', 'XRAY', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50300', 'KNEE LT. (SKYLINE)', 'XRAY', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50301', 'KNEE LT. (AP)', 'XRAY', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50302', 'KNEE LT. ( LAT)', 'XRAY', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50303', 'KNEE LT. (AP. STANDING , LAT)', 'XRAY', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50304', 'KNEE LT. (VALGUS)', 'XRAY', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50305', 'KNEE LT. (VARUS)', 'XRAY', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50306', 'KNEE LT. (ANTERIOR DRAWER STRESS)', 'XRAY', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50307', 'KNEE LT. (POSTERIOR DRAWER STRESS)', 'XRAY', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50308', 'L-S SPINES (BENDING)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50309', 'MANDIBLE (OBLIQUE)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50310', 'RIBS (AP , OBLIQUE)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50375', 'TOE LT. (AP,OBLIQUE)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50389', 'PELVIS (OUTLET VIEW)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50393', 'ELBOW RT. (RADIOCARPITELLAR)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50311', 'RIBS (AP)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50312', 'RIBS LT. (OBLIQUE)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50313', 'S-I JOINT (AP , OBLIQUE)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50315', 'SCAPULAR RT. (AP)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50316', 'SCAPULAR RT. (TRANSCAPULAR)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50317', 'SCAPULAR BOTH (AP, TRANSCAPULAR)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50350', 'SKULL (SUBMENTOVERTEX)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50354', 'THORACIC SPINES (AP)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50355', 'THORACIC SPINES (LAT)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50356', 'THORACIC SPINES (BOTH  OBLIQUE)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50357', 'THORACIC SPINES (FLEXION , EXTESION)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50358', 'THORACIC SPINES (BENDING 2 VIEWS)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50359', 'T-L SPINES (AP)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50360', 'T-L SPINES (LAT)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50361', 'T-L SPINES (BENDING 2 VIEW)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50362', 'TRAUMA SERIES', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50382', 'HIP RT. (LATERAL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50384', 'BABYGRAM', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50396', 'FEMUR RT. INCLUDE HIP (AP, LATERAL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50398', 'FEMUR LT. INCLUDE KNEE (AP, LATERAL)', 'XRAY', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50364', 'WRIST RT. (ULNAR DEVIATION)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50365', 'WRIST RT. (OBLIQUE)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50366', 'WRIST RT.(CARPAL TUNNEL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50368', 'WRIST BOTH (ULNAR DEVIATION)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50369', 'WRIST BOTH (OBLIQUE)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50370', 'WRIST BOTH (CARPAL TUNNEL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50372', 'WRIST LT. (ULNAR DEVIATION)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50373', 'WRIST LT. (OBLIQUE)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50374', 'WRIST LT.(CARPAL TUNNEL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50407', 'FOOT RT. (AP,LAT)', 'XRAY', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50395', 'FEMUR RT. INCLUDE KNEE (AP, LATERAL)', 'XRAY', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50402', 'KNEE BOTH (AP STANDING)', 'XRAY', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50406', 'FOOT LT. (AP,LAT)', 'XRAY', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50408', 'FOOT BOTH (AP,LAT)', 'XRAY', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50224', 'FEMUR LT. (AP, LATERAL)', 'XRAY', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50227', 'L-S SPINES (LATERAL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50238', 'FEET BOTH (LATERAL)', 'XRAY', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50241', 'FOOT LT. (OBLIQUE )', 'XRAY', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50244', 'ANKLE RT. (AP, LATERAL)', 'XRAY', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50284', 'KNEE RT. (SKYLINE)', 'XRAY', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50062', 'KNEE BOTH (NOTCH VIEW)', 'XRAY', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50065', 'LEG RT. (AP,LAT)', 'XRAY', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50068', 'L-S SPINES (AP,LAT)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50070', 'L-S SPINES (FLEXION, EXTESION)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50073', 'NASAL BONE ', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50079', 'ORBIT RT.', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50081', 'OPTIC FORAMEN', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50083', 'PELVIS (AP)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50084', 'PELVIS (INLET,OUTLET)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50090', 'STYLOID PROCESS', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50091', 'SHOULDER BOTH (AP)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50092', 'SHOULDER RT. (AP)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50103', 'SHOULDER BOTH (AXILLARY VIEW)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50107', 'SHOULDER RT. (TRANSCAPULAR)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50052', 'HUMERUS BOTH (AP,LAT)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50409', 'NECK (SOFT TISSUE AP)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50381', 'HAND LT. (LAT)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50383', 'HIP LT. (LATERAL)', 'XRAY', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50400', 'KNEE RT.(NOTCH VIEW)', 'XRAY', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '51001', 'BMD 1 PART', 'BMD', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '51002', 'BMD 2 PART', 'BMD', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '51004', 'BMD(Whole Body)', 'BMD', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '52002', 'BARIUM ENEMA,SINGLE CM', 'FLUORO', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '52003', 'BARIUM ENEMA,DOUBLE CM', 'FLUORO', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '52004', 'BARIUM SWALLOW', 'FLUORO', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '52005', 'CYSTOGRAM', 'FLUORO', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '52006', 'ESOPHAGOGRAM', 'FLUORO', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '52007', 'Endoscopic Retrograde Cholangio Pancreatography : ', 'FLUORO', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '52008', 'FISTULOGRAPHY', 'FLUORO', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '52009', 'H.S.G.', 'FLUORO', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '52010', 'MYELOGRAM COMPLETE T-SPINES', 'FLUORO', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '52011', 'MYELOGRAM LUMBAR SPINES', 'FLUORO', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '52012', 'RETROGRADE PYELOGRAM', 'FLUORO', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '52014', 'SIALOGRAPHY', 'FLUORO', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '52015', 'TRANSHEPATIC CHOLANGGIOGRAPHY', 'FLUORO', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '52016', 'T.TUBE CHOLANGGIOGRAPHY', 'FLUORO', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '52017', 'INTRAOPERATIVE CHOLANGIOGRAPHY', 'FLUORO', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '52018', 'UGI', 'FLUORO', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '52019', 'UGI WITH SMALL BOWEL SERIES', 'FLUORO', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '52020', 'URETHROGRAM', 'FLUORO', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '52021', 'V.C.U.G.(42603)', 'FLUORO', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '52022', 'VENOGRAM RT.', 'FLUORO', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '52023', 'VENOGRAM LT.', 'FLUORO', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '52024', 'MYELOGRAM C-SPINE', 'FLUORO', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '52029', 'ANTEGRADE PYELOGRAM', 'FLUORO', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '52026', 'SCANOGRAM BOTH LEGS', 'FLUORO', 'LOWER EXTREMITY', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '52027', 'SCANOGRAM WHOLE SPINES AP', 'FLUORO', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '53035', 'PERM  CATH.(42514)', 'FLUORO', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '53013', 'PTBD.(72610)', 'FLUORO', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '53034', 'Peripherally Inserted Central Catheter : PICC Line', 'FLUORO', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '53003', 'RT.UPPER EXTREMITY ANGIOGRAM (42513)', 'FLUORO', '0', 0, 0, NULL, NULL, '', '', 0),
+('THAIRIS', '50426', 'MANDIBLE (AP,LATERAL)', 'XRAY', '', 0, 0, NULL, NULL, '0', '', 0),
+('THAIRIS', '50427', 'MANDIBLE (LATERAL)', 'XRAY', '', 0, 0, NULL, NULL, '0', '', 0),
+('THAIRIS', '50428', 'SHOULDER RT. (ZANCA VIEW)', 'XRAY', '', 0, 0, NULL, NULL, '0', '', 0),
+('THAIRIS', '50429', 'SHOULDER LT. (ZANCA VIEW)', 'XRAY', '', 0, 0, NULL, NULL, '0', '', 0),
+('THAIRIS', '51005', 'BMD 3 PART', 'BMD', '', 0, 0, NULL, NULL, '0', '', 0),
+('THAIRIS', '50430', 'WRIST LT. (LAT)', 'XRAY', '', 0, 0, NULL, NULL, '0', '', 0),
+('THAIRIS', '20160', 'MRI LT.FEMUR', 'MR', '', 0, 0, NULL, NULL, '0', '', 0),
+('THAIRIS', '50446', 'SKULL PA', 'XRAY', '', 0, 0, NULL, NULL, '0', '', 0),
+('THAIRIS', '50448', 'THUMB BOTH (PA,LATERAL)', 'XRAY', '', 0, 0, NULL, NULL, '0', '', 0),
+('THAIRIS', '50451', 'HUMERUS BOTH (AP)', 'XRAY', '', 0, 0, NULL, NULL, '0', '', 0),
+('THAIRIS', '50450', 'THUMB LT. (PA,LATERAL)', 'XRAY', '', 0, 0, NULL, NULL, '0', '', 0),
+('THAIRIS', '50449', 'THUMB RT. (PA,LATERAL)', 'XRAY', '', 0, 0, NULL, NULL, '0', '', 0),
+('THAIRIS', '50434', 'MANDIBLE (LT.OBLIQUE)', 'XRAY', '', 0, 0, NULL, NULL, '0', '', 0),
+('THAIRIS', '50441', 'LEG BOTH (LAT)', 'CR', '', 0, 0, NULL, NULL, '0', '', 0),
+('THAIRIS', '50436', 'MANDIBLE (AP, RT.OBLIQUE)', 'CR', '', 0, 0, NULL, NULL, '0', '', 0),
+('THAIRIS', '50444', 'LEG RT. (AP)', 'CR', '', 0, 0, NULL, NULL, '0', '', 0),
+('THAIRIS', '53055', 'Fluoroscopic Observation', 'RF', '', 0, 0, NULL, NULL, '0', '', 0),
+('THAIRIS', '50443', 'LEG LT. (LAT)', 'CR', '', 0, 0, NULL, NULL, '0', '', 0),
+('THAIRIS', '50453', 'SHOULDER RT.(Velpeau View)', 'CR', '', 0, 0, NULL, NULL, '0', '', 0),
+('THAIRIS', '5024', '', 'CR', '', 0, 0, NULL, NULL, '0', '', 0),
+('THAIRIS', '1011', 'CT PLAIN K.U.B.', 'CT', '', 0, 0, NULL, NULL, '0', '', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_country`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_country` (
+  `COUNTRY_CODE` varchar(20) NOT NULL,
+  `COUNTRY_NAME` varchar(50) NOT NULL,
+  `COUNTRY_NAME_ENG` varchar(50) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=tis620;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_department`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_department` (
+  `CENTER` varchar(10) NOT NULL,
+  `DEPARTMENT_ID` varchar(10) NOT NULL,
+  `NAME_THAI` varchar(50) NOT NULL,
+  `NAME_ENG` varchar(50) NOT NULL,
+  `TYPE` varchar(1) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=tis620;
+
+--
+-- Dumping data for table `xray_department`
+--
+
+INSERT INTO `xray_department` (`CENTER`, `DEPARTMENT_ID`, `NAME_THAI`, `NAME_ENG`, `TYPE`) VALUES
+('THAIRIS', '001', 'None', 'None', 'O'),
+('THAIRIS', '002', 'MED', 'MED', 'O'),
+('THAIRIS', '003', 'ER', 'Emergency ROOM', 'O'),
+('THAIRIS', '004', 'ENT Department', 'ENT Department', 'O'),
+('THAIRIS', '005', 'ICU', 'ICU', 'I'),
+('THAIRIS', '006', 'CCU', 'CCU', 'I'),
+('THAIRIS', '40104', 'Chest (Pediatic)', '', 'I'),
+('THAIRIS', '405', 'HIGH RISK\r', '', 'I'),
+('THAIRIS', '406', 'ICU Pediatic', '', 'I');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_digi_form_mammo`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_digi_form_mammo` (
+  `ID` int(10) NOT NULL,
+  `ACCESSION` int(30) NOT NULL,
+  `EVER` varchar(1) NOT NULL,
+  `FAMILY_MOM` varchar(1) NOT NULL,
+  `FAMILY_SIS` varchar(1) NOT NULL,
+  `FAMILY__AUN` varchar(1) NOT NULL,
+  `FAMILY_GRAN_MOM` varchar(1) NOT NULL,
+  `FAMILY_DAUG` varchar(1) NOT NULL,
+  `FAMILY_COU` varchar(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_film_folder`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_film_folder` (
+  `ID` tinyint(10) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=tis620;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_icd`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_icd` (
+  `CODE` varchar(20) NOT NULL,
+  `DESCRIPTION` varchar(150) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=tis620;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_image_status`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_image_status` (
+  `HN` varchar(10) NOT NULL,
+  `XN` varchar(10) NOT NULL,
+  `DEPARTMENT_ID` varchar(10) NOT NULL,
+  `MOVE_BY` varchar(50) NOT NULL,
+  `DATE` date NOT NULL,
+  `TYPE_STATUS` varchar(20) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=tis620;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_log`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_log` (
+  `ID` int(11) NOT NULL,
+  `USER` varchar(20) NOT NULL,
+  `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `IP` varchar(30) NOT NULL,
+  `URL` varchar(100) NOT NULL,
+  `EVENT` varchar(20) NOT NULL,
+  `MRN` varchar(20) NOT NULL,
+  `ACCESSION` varchar(20) NOT NULL
+) ENGINE=MyISAM AUTO_INCREMENT=10093 DEFAULT CHARSET=tis620;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_modalities`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_modalities` (
+  `MOD_NAME` varchar(20) NOT NULL,
+  `MOD_TYPE` varchar(20) NOT NULL,
+  `MOD_DESCRIPTION` varchar(50) NOT NULL,
+  `AE_TITLE` varchar(50) NOT NULL,
+  `IP_ADDRESS` varchar(50) NOT NULL,
+  `PORT` varchar(20) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=tis620;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_modalities_type`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_modalities_type` (
+  `MOD_TYPE` varchar(20) NOT NULL,
+  `MOD_DESCRIPTION` varchar(50) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=tis620;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_mwl`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_mwl` (
+  `IP` varchar(20) NOT NULL,
+  `AE` varchar(50) NOT NULL,
+  `PORT` int(5) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=tis620;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_name_prefix`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_name_prefix` (
+  `ID` varchar(5) NOT NULL,
+  `THAI` varchar(50) NOT NULL,
+  `ENG` varchar(50) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=tis620;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_news`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_news` (
+  `ID` int(11) NOT NULL,
+  `CENTER_CODE` varchar(20) NOT NULL,
+  `NEWS` varchar(1000) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=tis620;
+
+--
+-- Dumping data for table `xray_news`
+--
+
+INSERT INTO `xray_news` (`ID`, `CENTER_CODE`, `NEWS`) VALUES
+(1, 'THAIRIS', '                        <p><span style="FONT-WEIGHT: bold; TEXT-DECORATION: underline"><font color="#1015ff">NEWS</font></span><br><br></p><p>ThaiRIS Demo testing. Version 1.0</p><p>Free and opensource by ThaiRIS.net</p><p><br></p><p><br></p><p><br></p><p style="text-align: center;">This demo for testing only..</p>');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_note`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_note` (
+  `ID` int(2) NOT NULL,
+  `TYPE` varchar(20) COLLATE utf8_bin NOT NULL,
+  `NAME` varchar(50) COLLATE utf8_bin NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_order_cart`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_order_cart` (
+  `ID` int(10) NOT NULL,
+  `SESSION_ID` varchar(50) NOT NULL,
+  `MRN` varchar(10) NOT NULL,
+  `XRAY_CODE` varchar(10) NOT NULL,
+  `DATE` date NOT NULL,
+  `REFERRER_ID` varchar(10) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=tis620;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_patient_info`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_patient_info` (
+  `ID` int(10) NOT NULL,
+  `CENTER_CODE` varchar(10) CHARACTER SET tis620 NOT NULL,
+  `MRN` varchar(10) CHARACTER SET tis620 NOT NULL,
+  `XN` varchar(10) CHARACTER SET tis620 DEFAULT NULL,
+  `SSN` varchar(13) CHARACTER SET tis620 DEFAULT NULL,
+  `PREFIX` varchar(50) CHARACTER SET tis620 DEFAULT NULL,
+  `NAME` varchar(120) CHARACTER SET tis620 NOT NULL,
+  `LASTNAME` varchar(120) CHARACTER SET tis620 NOT NULL,
+  `NAME_ENG` varchar(120) CHARACTER SET tis620 DEFAULT NULL,
+  `LASTNAME_ENG` varchar(120) CHARACTER SET tis620 DEFAULT NULL,
+  `NAME_OLD` varchar(50) CHARACTER SET tis620 DEFAULT NULL,
+  `LASTNAME_OLD` varchar(50) CHARACTER SET tis620 DEFAULT NULL,
+  `SEX` varchar(10) CHARACTER SET tis620 DEFAULT NULL,
+  `BIRTH_DATE` date DEFAULT NULL,
+  `TELEPHONE` varchar(15) CHARACTER SET tis620 DEFAULT NULL,
+  `EMAIL` varchar(50) CHARACTER SET tis620 DEFAULT NULL,
+  `NOTE` varchar(2000) CHARACTER SET tis620 DEFAULT NULL,
+  `CREATE_DATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `FIRSTVISITDATE` date DEFAULT NULL,
+  `LASTVISITDATE` date DEFAULT NULL,
+  `RIGHT_CODE` varchar(10) CHARACTER SET tis620 DEFAULT NULL,
+  `ADDRESS` varchar(500) CHARACTER SET tis620 DEFAULT NULL,
+  `VILLAGE` varchar(50) CHARACTER SET tis620 DEFAULT NULL,
+  `ROAD` varchar(50) CHARACTER SET tis620 DEFAULT NULL,
+  `TAMBON_CODE` varchar(50) CHARACTER SET tis620 DEFAULT NULL,
+  `AMPHOE_CODE` varchar(50) CHARACTER SET tis620 DEFAULT NULL,
+  `PROVINCE_CODE` varchar(20) CHARACTER SET tis620 DEFAULT NULL,
+  `COUNTRY_CODE` varchar(50) CHARACTER SET tis620 DEFAULT NULL
+) ENGINE=MyISAM AUTO_INCREMENT=22282278 DEFAULT CHARSET=tis620 COLLATE=tis620_bin ROW_FORMAT=DYNAMIC;
+
+--
+-- Dumping data for table `xray_patient_info`
+--
+
+INSERT INTO `xray_patient_info` (`ID`, `CENTER_CODE`, `MRN`, `XN`, `SSN`, `PREFIX`, `NAME`, `LASTNAME`, `NAME_ENG`, `LASTNAME_ENG`, `NAME_OLD`, `LASTNAME_OLD`, `SEX`, `BIRTH_DATE`, `TELEPHONE`, `EMAIL`, `NOTE`, `CREATE_DATE`, `FIRSTVISITDATE`, `LASTVISITDATE`, `RIGHT_CODE`, `ADDRESS`, `VILLAGE`, `ROAD`, `TAMBON_CODE`, `AMPHOE_CODE`, `PROVINCE_CODE`, `COUNTRY_CODE`) VALUES
+(22282270, 'THAIRIS', 'T001', 'T001', NULL, NULL, 'TEST', 'RADIOLOGY', '', '', NULL, NULL, 'M', '1780-10-04', '', '', NULL, '2016-10-08 15:14:13', NULL, NULL, NULL, '', NULL, '', '', '', '', 'Thailand'),
+(22282271, 'THAIRIS', 'T002', 'T002', NULL, NULL, 'Test2', 'Radiology', '', '', NULL, NULL, 'F', '1970-01-01', '', '', NULL, '2016-10-09 05:52:47', NULL, NULL, NULL, '', NULL, '', '', '', '', 'Thailand'),
+(22282272, 'THAIRIS', 'T003', 'T003', NULL, NULL, 'Test3', 'Radiology', '', '', NULL, NULL, 'M', '2016-10-04', '', '', NULL, '2016-10-10 01:40:49', NULL, NULL, NULL, '', NULL, '', '', '', '', 'Thailand'),
+(22282273, 'THAIRIS', 'T004', 'T004', NULL, NULL, 'Ray', 'Mcdonal', '', '', NULL, NULL, 'M', '1970-01-01', '', '', NULL, '2016-10-10 14:30:42', NULL, NULL, NULL, '', NULL, '', '', '', '', 'Thailand'),
+(22282274, 'THAIRIS', 'T005', 'T005', NULL, NULL, 'Test5', 'Demo', '', '', NULL, NULL, 'M', '2016-10-07', '', '', NULL, '2016-10-12 08:01:34', NULL, NULL, NULL, '', NULL, '', '', '', '', 'Thailand'),
+(22282275, 'THAIRIS', 'T007', 'T007', NULL, NULL, 'ThaRIS', 'Testing', '', '', NULL, NULL, 'M', '1976-01-01', '', '', NULL, '2016-10-13 00:51:42', NULL, NULL, NULL, '', NULL, '', '', '', '', 'Thailand'),
+(22282276, 'THAIRIS', 'C001', 'C001', NULL, NULL, 'Hillary', 'Clinton', '', '', NULL, NULL, 'F', '2016-11-07', '', '', NULL, '2016-11-09 01:20:37', NULL, NULL, NULL, '', NULL, '', '', '', '', 'England'),
+(22282277, 'THAIRIS', 'D001', 'D001', NULL, NULL, 'Donal', 'Trumb', '', '', NULL, NULL, 'M', '2016-11-07', '', '', NULL, '2016-11-09 01:23:06', NULL, NULL, NULL, '', NULL, '', '', '', '', 'Thailand');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_patient_right`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_patient_right` (
+  `RIGHT_CODE` varchar(10) NOT NULL,
+  `RIGHT_NAME` varchar(50) NOT NULL,
+  `DISCOUNT` int(3) unsigned DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=tis620;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_preparation`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_preparation` (
+  `PREP_ID` int(10) NOT NULL,
+  `NAME` varchar(50) NOT NULL,
+  `MODALITY` varchar(20) NOT NULL,
+  `BODY_PART` varchar(20) NOT NULL,
+  `DESCRIPTION_THAI` varchar(5000) NOT NULL,
+  `DESCRIPTION_ENG` varchar(5000) NOT NULL
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=tis620;
+
+--
+-- Dumping data for table `xray_preparation`
+--
+
+INSERT INTO `xray_preparation` (`PREP_ID`, `NAME`, `MODALITY`, `BODY_PART`, `DESCRIPTION_THAI`, `DESCRIPTION_ENG`) VALUES
+(1, 'test', 'CT', 'tes', 'teset', 'test'),
+(2, 'test2', 'CT', 'test2', 'test2', 'test2'),
+(3, 'test2', 'FLUORO', 'test2', 'test2', 'test2'),
+(4, 'test', 'ANGIO', 'ABDOMEN', 'tes', 'test'),
+(5, 'CT Upper Abdomen', 'CT', 'ABDOMEN', '	<u>		การเตรียมตัวตรวจช่องท้อง		</u><div><div>1. งดน้ำอาหารอย่างน้อย 4-6 ชั่วโมง</div><div>2. รับประทานยาได้ตามปกติ ยกเว้น ผู้ป่วยเบาหวานให้งดยาเบาหวานในวันตรวจ</div><div>3. เจ้าหน้าที่ทำการซักประวัติการแพ้สารทึบรังสี แพ้อาหารทะเล เป็นโรคภูมิแพ้ เป็นโรคหอบหืดรุนแรง โรคหัวใจ โรคเกี่ยวกับไต ก่อนการตรวจ</div><div>4. โดยทั่วไป แพทย์จะให้ทานน้ำผสมสารทึบรังสี ประมาณ 1,000 cc. ก่อนการตรวจ 1-2 ชั่วโมง และอาจต้องสวนน้ำผสมสารทึบรังสี เข้าทางทวารหนัก</div><div>5. พยาบาลจะให้สารน้ำผ่านทางหลอดเลือดบริเวณข้อพับแขน เพื่อให้สำหรับการฉีดสารทึบรังสี ในระหว่างการตรวจ ผู้ป่วย</div></div>	', '<p style="margin: 1em 0px; padding: 0px; font-family: ''Helvetica Neue'', arial, geneva, helvetica, sans-serif; font-size: 13px; background-color: rgb(255, 255, 204);"><b style="margin: 0px; padding: 0px;">Preparation</b>&nbsp;<br style="margin: 0px; padding: 0px;">Adult patients should not eat 4 hours prior to the appointment time, but may drink clear liquids up until 2 hours prior to the appointment time (unless otherwise instructed).&nbsp; Any medication that is needed should be taken as prescribed with a small amount of water, unless otherwise instructed by the Radiology Department.&nbsp;</p><p style="margin: 1em 0px; padding: 0px; font-family: ''Helvetica Neue'', arial, geneva, helvetica, sans-serif; font-size: 13px; background-color: rgb(255, 255, 204);">Clear Liquids Allowed:</p><ul style="margin: 1em 0px; padding: 0px 0px 0px 2em; font-family: ''Helvetica Neue'', arial, geneva, helvetica, sans-serif; font-size: 13px; background-color: rgb(255, 255, 204);"><li style="margin: 0px; padding: 0px; list-style: circle url(http://www.med.umich.edu/ott/images/core/bullet.gif);">Tea/black coffee</li><li style="margin: 0px; padding: 0px; list-style: circle url(http://www.med.umich.edu/ott/images/core/bullet.gif);">Apple or cranberry juice</li><li style="margin: 0px; padding: 0px; list-style: circle url(http://www.med.umich.edu/ott/images/core/bullet.gif);">Lemon or Lime Jello-O</li><li style="margin: 0px; padding: 0px; list-style: circle url(http://www.med.umich.edu/ott/images/core/bullet.gif);">Clear Chicken or Beef Broth</li><li style="margin: 0px; padding: 0px; list-style: circle url(http://www.med.umich.edu/ott/images/core/bullet.gif);">Clear Sodas (7-UP, Sprite, Ginger Ale)</li><li style="margin: 0px; padding: 0px; list-style: circle url(http://www.med.umich.edu/ott/images/core/bullet.gif);">Water</li></ul><p style="margin: 1em 0px; padding: 0px; font-family: ''Helvetica Neue'', arial, geneva, helvetica, sans-serif; font-size: 13px; background-color: rgb(255, 255, 204);">If you have any known allergies to dye or iodine, the CT Department or Radiologist needs to be aware of the allergy and what type of reaction you have had. This information will allow the radiologist to arrange for pre-medication for you through your referring physician or make necessary arrangements. Please call the Radiology Department at (734) 936-4500 if you have any known contrast allergies.</p>'),
+(6, 'TEST001', 'CT', 'ABDOMEN', '	<b><font size="5">test2</font></b><div><b><font size="5"><u>Pakorn Homhuandee</u></font></b></div>	', '	<b><font size="5">test</font></b><div><b><font size="5"><u>Pakorn Homhuandee</u></font></b></div>	'),
+(7, 'Upper Abdomen (Female)', 'US', 'ABDOMEN', '		ภาษาไทย การเตรียมตัว สำหรับ 5555<div><br></div>', '		English prep form for Ultrasound 3333	');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_printer`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_printer` (
+  `LOCATION` varchar(20) NOT NULL,
+  `IP` varchar(20) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=tis620;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_province`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_province` (
+  `PROVINCE_CODE` varchar(20) NOT NULL,
+  `PROVINCE_NAME` varchar(50) NOT NULL,
+  `PROVINCE_NAME_ENG` varchar(50) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=tis620;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_referrer`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_referrer` (
+  `ID` int(11) NOT NULL,
+  `REFERRER_ID` varchar(10) NOT NULL,
+  `DEGREE` varchar(5) NOT NULL DEFAULT 'MD',
+  `NAME` varchar(50) DEFAULT NULL,
+  `LASTNAME` varchar(50) DEFAULT NULL,
+  `NAME_ENG` varchar(50) DEFAULT NULL,
+  `LASTNAME_ENG` varchar(50) DEFAULT NULL,
+  `PREFIX` varchar(3) DEFAULT NULL,
+  `SEX` varchar(5) DEFAULT NULL,
+  `CENTER_CODE` varchar(10) DEFAULT NULL
+) ENGINE=MyISAM AUTO_INCREMENT=402 DEFAULT CHARSET=tis620;
+
+--
+-- Dumping data for table `xray_referrer`
+--
+
+INSERT INTO `xray_referrer` (`ID`, `REFERRER_ID`, `DEGREE`, `NAME`, `LASTNAME`, `NAME_ENG`, `LASTNAME_ENG`, `PREFIX`, `SEX`, `CENTER_CODE`) VALUES
+(401, '401', 'MD', 'John', 'Smith', 'John', 'Smith', NULL, 'M', 'THAIRIS');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_report`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_report` (
+  `ID` int(20) NOT NULL,
+  `ACCESSION` varchar(30) DEFAULT NULL,
+  `REPORT` varchar(15000) DEFAULT NULL,
+  `BIRAD` varchar(1) DEFAULT NULL,
+  `HISTORY` varchar(5000) DEFAULT NULL,
+  `CALCIUM` varchar(5000) DEFAULT NULL,
+  `CORONARY` varchar(5000) DEFAULT NULL,
+  `KEY_IMAGE_LINK` varchar(5000) DEFAULT NULL,
+  `DICTATE_BY` varchar(10) DEFAULT NULL,
+  `DICTATE_DATE` date DEFAULT NULL,
+  `DICTATE_TIME` time DEFAULT NULL,
+  `APPROVE_BY` varchar(10) DEFAULT NULL,
+  `APPROVE_DATE` date DEFAULT NULL,
+  `APPROVE_TIME` time DEFAULT NULL,
+  `STATUS` varchar(20) DEFAULT NULL
+) ENGINE=MyISAM AUTO_INCREMENT=113992 DEFAULT CHARSET=tis620;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_report_structure`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_report_structure` (
+  `ID` int(10) NOT NULL,
+  `MODALITY_TYPE` varchar(10) NOT NULL,
+  `NAME` varchar(50) NOT NULL,
+  `TYPE` varchar(20) NOT NULL,
+  `GROUP` varchar(20) NOT NULL,
+  `DETAIL` varchar(2000) NOT NULL
+) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=tis620;
+
+--
+-- Dumping data for table `xray_report_structure`
+--
+
+INSERT INTO `xray_report_structure` (`ID`, `MODALITY_TYPE`, `NAME`, `TYPE`, `GROUP`, `DETAIL`) VALUES
+(1, 'CT', 'CALCIUM-SCORE', 'text_html', '', '<b>A coronary artery calcium scoring examination was performed on a multi-slice computed tomography scanner (Brilliance 64, Philips Medical Systems). The data was used to detect and quantify the presence of calcified plaque in the coronary arteries.</b> <table width="100%" border="1" cellpadding="0" cellspacing="0">   <tr>     <td colspan="4">Key scan parameters : </td>   </tr>   <tr>     <td width="15%" align="right">kVp:</td>     <td width="20%">&nbsp;</td>     <td width="45%" align="right">Slice Thickness(mm):</td>     <td width="20%">&nbsp;</td>   </tr>   <tr>     <td width="15%" align="right">mAs:</td>     <td width="20%">&nbsp;</td>     <td width="45%" align="right">Rotation Time (s):</td>     <td width="20%">&nbsp;</td>   </tr>   <tr>     <td width="15%" align="right">Gating:</td>     <td width="20%">&nbsp;</td>     <td width="45%" align="right">&nbsp;</td>     <td width="20%">&nbsp;</td>   </tr> </table>'),
+(2, 'CT', 'CORONARY-SCORING', 'text_html', '', '<table width="100%" border="0" cellpadding="0" cellspacing="0">   <tr>     <td colspan="2"><em>The patient has a total Calcium Score of:</em></td>     <td width="32%" rowspan="5"><img src=image/bkk/bkk-heart.jpg /></td>   </tr>   <tr>     <td width="23%" align="right"><em>Protocol Name:</em></td>     <td width="45%" align="left">&nbsp;</td>   </tr>   <tr>     <td align="right"><em>Weighting:</em></td>     <td align="left">&nbsp;</td>   </tr>   <tr>     <td align="right"><em>Threshold:</em></td>     <td align="left">&nbsp;</td>   </tr>   <tr>     <td align="right"><em>Density Mode:</em></td>     <td align="left">&nbsp;</td>   </tr> </table><br />'),
+(3, 'CT', 'Chest pain', 'checkbox', 'risk', ''),
+(4, 'CT', 'Dyspnea', 'checkbox', 'risk', ''),
+(5, 'CT', 'Palpitation', 'checkbox', 'risk', ''),
+(6, 'CT', 'Smoking', 'checkbox', 'risk', ''),
+(7, 'CT', 'Abnormal ECG', 'checkbox', 'risk', ''),
+(8, 'CT', 'Abnormal wall motion', 'checkbox', 'risk', ''),
+(9, 'CT', 'Positive EST', 'checkbox', 'risk', ''),
+(10, 'CT', 'Family history of CA', 'checkbox', 'risk', ''),
+(11, 'CT', 'Hypertension', 'checkbox', 'risk', ''),
+(12, 'CT', 'Diabetes Mellitus', 'checkbox', 'risk', ''),
+(13, 'CT', 'Hypercholesterolemia', 'checkbox', 'risk', ''),
+(14, 'CT', 'Peripheral arterial disease', 'checkbox', 'risk', ''),
+(15, 'CT', 'Previous stroke', 'checkbox', 'risk', ''),
+(16, 'CT', 'Previous MI', 'checkbox', 'risk', ''),
+(17, 'CT', 'Previous CABG', 'checkbox', 'risk', ''),
+(18, 'CT', 'Previous PCI', 'checkbox', 'risk', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_report_template`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_report_template` (
+  `ID` int(5) NOT NULL,
+  `NAME` varchar(50) NOT NULL,
+  `XRAY_CODE` varchar(50) NOT NULL,
+  `XRAY_TYPE_CODE` varchar(10) NOT NULL,
+  `BODY_PART` varchar(15) NOT NULL,
+  `USER_ID` varchar(20) NOT NULL,
+  `REPORT_DETAIL` varchar(10000) NOT NULL,
+  `ALL_USER` varchar(1) NOT NULL DEFAULT '0',
+  `TIME_CREATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=tis620;
+
+--
+-- Dumping data for table `xray_report_template`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_request`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_request` (
+  `ID` int(11) NOT NULL,
+  `REQUEST_NO` varchar(30) NOT NULL,
+  `XN` varchar(10) DEFAULT NULL,
+  `MRN` varchar(10) NOT NULL,
+  `REFERRER` varchar(20) DEFAULT NULL,
+  `REQUEST_DATE` date NOT NULL,
+  `REQUEST_TIMESTAMP` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `DEPARTMENT_ID` varchar(10) DEFAULT NULL,
+  `PORTABLE` int(1) unsigned DEFAULT NULL,
+  `USER` varchar(10) DEFAULT NULL,
+  `CANCEL_STATUS` int(1) unsigned NOT NULL DEFAULT '0',
+  `USER_ID_CANCLE` varchar(10) DEFAULT NULL,
+  `CANCEL_DATE` date DEFAULT NULL,
+  `CANCEL_TIME` time DEFAULT NULL,
+  `STATUS` varchar(10) NOT NULL DEFAULT '1',
+  `ICON` varchar(50) DEFAULT NULL,
+  `NOTE` varchar(500) DEFAULT NULL,
+  `CENTER_CODE` varchar(10) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=tis620;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_request_detail`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_request_detail` (
+  `ID` int(10) NOT NULL,
+  `REQUEST_NO` varchar(30) NOT NULL,
+  `ACCESSION` varchar(30) NOT NULL,
+  `XRAY_CODE` varchar(10) NOT NULL,
+  `CHARGED` int(1) DEFAULT NULL,
+  `REQUEST_TIMESTAMP` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `REQUEST_TIME` time NOT NULL DEFAULT '00:00:00',
+  `REQUEST_DATE` date DEFAULT NULL,
+  `SCHEDULE_DATE` date DEFAULT NULL,
+  `SCHEDULE_TIME` time DEFAULT NULL,
+  `REPORT_TIME` time DEFAULT NULL,
+  `REPORT_DATE` date DEFAULT NULL,
+  `REPORT_STATUS` varchar(1) DEFAULT '0',
+  `CANCEL_STATUS` varchar(1) DEFAULT '0',
+  `USER_ID_CANCEL` varchar(10) DEFAULT NULL,
+  `ARRIVAL_TIME` timestamp NULL DEFAULT NULL,
+  `READY_TIME` timestamp NULL DEFAULT NULL,
+  `START_TIME` timestamp NULL DEFAULT NULL,
+  `COMPLETE_TIME` timestamp NULL DEFAULT NULL,
+  `ASSIGN_TIME` timestamp NULL DEFAULT NULL,
+  `APPROVED_TIME` timestamp NULL DEFAULT NULL,
+  `ASSIGN` varchar(20) DEFAULT NULL,
+  `ASSIGN_BY` varchar(20) DEFAULT NULL,
+  `STATUS` varchar(10) NOT NULL DEFAULT 'NEW',
+  `PAGE` varchar(15) NOT NULL DEFAULT 'ORDER LIST',
+  `LOCKBY` varchar(15) DEFAULT NULL,
+  `URGENT` varchar(1) NOT NULL DEFAULT '0',
+  `LASTREPORT_ID` varchar(20) DEFAULT NULL,
+  `TEMP_REPORT` varchar(15000) DEFAULT NULL,
+  `AUTO_SAVE_TIME` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `TECH1` varchar(5) DEFAULT NULL,
+  `TECH2` varchar(5) DEFAULT NULL,
+  `TECH3` varchar(5) DEFAULT NULL,
+  `FLAG1` int(1) DEFAULT NULL,
+  `FLAG2` int(1) DEFAULT NULL,
+  `FLAG3` int(1) DEFAULT NULL,
+  `REPORT_BOOK` date DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=tis620;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_room`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_room` (
+  `ID` int(11) NOT NULL,
+  `CENTER` varchar(10) NOT NULL,
+  `NAME` varchar(20) NOT NULL,
+  `DESCRIPTION` varchar(20) NOT NULL,
+  `TYPE` varchar(10) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=tis620;
+
+--
+-- Dumping data for table `xray_room`
+--
+
+INSERT INTO `xray_room` (`ID`, `CENTER`, `NAME`, `DESCRIPTION`, `TYPE`) VALUES
+(0, 'THAIRIS', 'US1', 'Ultrasound Room1', 'US'),
+(0, 'THAIRIS', 'US2', 'Ultrasound Room2', 'US'),
+(0, 'THAIRIS', 'CT', 'CT ROOM', 'CT'),
+(0, 'THAIRIS', 'GEN1', 'General Xray Room1', 'XRAY'),
+(0, 'THAIRIS', 'GEN2', 'General Xray Room2', 'XRAY'),
+(0, 'THAIRIS', 'PORT1', 'Portable', 'XRAY'),
+(0, 'THAIRIS', 'FLU1', 'Flu Room1', 'SPECIAL');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_schedule`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_schedule` (
+  `HN` varchar(10) NOT NULL,
+  `NAME` varchar(50) NOT NULL,
+  `LASTNAME` varchar(50) NOT NULL,
+  `AGE` varchar(3) NOT NULL,
+  `WARD` varchar(20) NOT NULL,
+  `DATE` date NOT NULL,
+  `TIME_START` time NOT NULL,
+  `TIME_END` time NOT NULL,
+  `DATE_REG` date NOT NULL,
+  `ROOM` varchar(20) NOT NULL,
+  `XRAY_CODE` varchar(10) NOT NULL,
+  `USER_ID` varchar(10) NOT NULL,
+  `DOCTOR_ID_REQUEST` varchar(10) DEFAULT NULL,
+  `REASON_FOR_STUDY` varchar(2000) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=tis620;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_sc_calendar`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_sc_calendar` (
+  `calendar_id` int(11) NOT NULL,
+  `calendar_name` varchar(20) CHARACTER SET latin1 DEFAULT NULL
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=tis620;
+
+--
+-- Dumping data for table `xray_sc_calendar`
+--
+
+INSERT INTO `xray_sc_calendar` (`calendar_id`, `calendar_name`) VALUES
+(1, 'CT'),
+(2, 'MRI'),
+(3, 'U/S'),
+(4, 'MAMMO'),
+(5, 'XRAY');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_sc_events`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_sc_events` (
+  `event_id` int(11) NOT NULL,
+  `MRN` varchar(10) NOT NULL,
+  `ACCESSION` varchar(16) NOT NULL,
+  `event_name` varchar(255) CHARACTER SET latin1 DEFAULT NULL,
+  `event_description` varchar(255) CHARACTER SET latin1 DEFAULT NULL,
+  `calendar_id` int(11) DEFAULT NULL,
+  `start_time` datetime DEFAULT NULL,
+  `end_time` datetime DEFAULT NULL,
+  `all_day` smallint(6) DEFAULT '0',
+  `create_user` varchar(20) NOT NULL
+) ENGINE=MyISAM AUTO_INCREMENT=236 DEFAULT CHARSET=tis620;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_status`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_status` (
+  `ID` int(11) NOT NULL,
+  `CODE` varchar(10) NOT NULL,
+  `NAME` varchar(20) NOT NULL
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=tis620;
+
+--
+-- Dumping data for table `xray_status`
+--
+
+INSERT INTO `xray_status` (`ID`, `CODE`, `NAME`) VALUES
+(1, 'NEW', 'NEW'),
+(2, 'ARRIVAL', 'ARRIVAL'),
+(3, 'SCHEDULE', 'SCHEDULE'),
+(4, 'WAIT', 'WAIT'),
+(5, 'ENDEXAM', 'ENDEXAM'),
+(6, 'ASSIGN', 'ASSIGN'),
+(7, 'COMPLETE', 'COMPLETE'),
+(8, 'STARTEXAM', 'STARTEXAM'),
+(9, 'CANCEL', 'CANCEL');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_stock`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_stock` (
+  `ID` int(6) NOT NULL,
+  `STOCK_CODE` varchar(10) NOT NULL,
+  `NAME` varchar(50) NOT NULL,
+  `TYPE` varchar(50) NOT NULL,
+  `AMOUNT` int(3) unsigned NOT NULL,
+  `PRICE` int(7) NOT NULL,
+  `UNIT` varchar(20) NOT NULL,
+  `ACTIVE` varchar(1) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=tis620;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_stock_type`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_stock_type` (
+  `ID` int(11) NOT NULL,
+  `NAME` varchar(50) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=tis620;
+
+--
+-- Dumping data for table `xray_stock_type`
+--
+
+INSERT INTO `xray_stock_type` (`ID`, `NAME`) VALUES
+(1, 'CONTRAST'),
+(2, 'FILM'),
+(3, 'MEDICINES'),
+(4, 'MISCELLANEOUS');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_tambon`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_tambon` (
+  `TAMBON_CODE` varchar(20) NOT NULL,
+  `TAMBON_NAME` varchar(50) NOT NULL,
+  `TAMBON_NAME_ENG` varchar(50) NOT NULL,
+  `AMPHOE_CODE` varchar(20) NOT NULL,
+  `POST_CODE` varchar(10) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=tis620;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_teaching_cases`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_teaching_cases` (
+  `ID` int(11) NOT NULL,
+  `SECTION_ID` varchar(20) NOT NULL,
+  `MRN` varchar(10) NOT NULL,
+  `ACCESSION` varchar(16) NOT NULL,
+  `USER_ID` varchar(10) NOT NULL,
+  `USER_GROUP` varchar(10) NOT NULL,
+  `USER_ALL` varchar(1) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=tis620;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_teaching_cat`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_teaching_cat` (
+  `ID` int(5) NOT NULL,
+  `SECTION` varchar(40) NOT NULL
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=tis620;
+
+--
+-- Dumping data for table `xray_teaching_cat`
+--
+
+INSERT INTO `xray_teaching_cat` (`ID`, `SECTION`) VALUES
+(1, 'Abdominal Imaging'),
+(2, 'Breast Imaging'),
+(3, 'Cardiovascular'),
+(4, 'Chest Imaging'),
+(5, 'Genital (Female) Imaging'),
+(6, 'Head & Neck Imaging'),
+(7, 'Interventional Radio'),
+(8, 'Musculoskeletal System'),
+(9, 'Neuroradiology'),
+(10, 'Paediatric Radiology'),
+(11, 'Uroradiology & Genital Male Imaging');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_type`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_type` (
+  `XRAY_TYPE_CODE` varchar(10) NOT NULL,
+  `TYPE_NAME` varchar(50) NOT NULL,
+  `TYPE_NAME_ENG` varchar(50) NOT NULL,
+  `MOD_TYPE` varchar(20) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=tis620;
+
+--
+-- Dumping data for table `xray_type`
+--
+
+INSERT INTO `xray_type` (`XRAY_TYPE_CODE`, `TYPE_NAME`, `TYPE_NAME_ENG`, `MOD_TYPE`) VALUES
+('ANGIO', 'Angio', 'Angiography', 'ANGIO\r'),
+('BMD', 'Bone Mineral Densitometry', 'Bone Mineral Densitometry', 'BMD'),
+('CT', 'Computed Tomography', 'Computed Tomography', 'CT'),
+('FLUORO', 'Xray Special', 'Xray Special', 'FLUORO'),
+('MAMMO', 'Mammography', 'Mammography', 'MG'),
+('MRI', 'Magnetic Resonance Imaging', 'Magnetic Resonance Imaging', 'MRI'),
+('US', 'Ultrasound', 'Ultrasound', 'US'),
+('XRAY', 'General Xray', 'General Xray', 'XRAY');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_usage`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_usage` (
+  `ID` int(10) NOT NULL,
+  `REQUEST_NO` varchar(10) NOT NULL,
+  `ACCESSION` varchar(10) NOT NULL,
+  `FILM_SIZE` varchar(10) NOT NULL,
+  `FILM_QULITY` varchar(10) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=tis620;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_user`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_user` (
+  `ID` int(5) NOT NULL,
+  `CODE` varchar(15) DEFAULT NULL,
+  `DF_CODE` varchar(15) DEFAULT NULL,
+  `LOGIN` varchar(20) NOT NULL,
+  `NAME` varchar(50) NOT NULL,
+  `LASTNAME` varchar(50) NOT NULL,
+  `NAME_ENG` varchar(50) NOT NULL,
+  `LASTNAME_ENG` varchar(50) NOT NULL,
+  `USER_TYPE_CODE` varchar(20) NOT NULL,
+  `PREFIX` varchar(20) DEFAULT NULL,
+  `PASSWORD` varchar(100) NOT NULL,
+  `CENTER_CODE` varchar(10) NOT NULL,
+  `CREATED_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `SESSION` varchar(100) NOT NULL,
+  `ENABLE` varchar(1) NOT NULL DEFAULT '1',
+  `ALL_CENTER` tinyint(1) NOT NULL DEFAULT '0',
+  `LOGINTIME` time DEFAULT NULL,
+  `TEXT_SIGNATURE` varchar(200) NOT NULL,
+  `PACS_LOGIN` varchar(20) DEFAULT NULL
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=tis620;
+
+--
+-- Dumping data for table `xray_user`
+--
+
+INSERT INTO `xray_user` (`ID`, `CODE`, `DF_CODE`, `LOGIN`, `NAME`, `LASTNAME`, `NAME_ENG`, `LASTNAME_ENG`, `USER_TYPE_CODE`, `PREFIX`, `PASSWORD`, `CENTER_CODE`, `CREATED_TIME`, `SESSION`, `ENABLE`, `ALL_CENTER`, `LOGINTIME`, `TEXT_SIGNATURE`, `PACS_LOGIN`) VALUES
+(1, 'test', 'test', 'admin', 'MR.Test', 'Radiology', 'TESTEnglishNAME', 'TESTEnglishLastname', 'ADMIN', NULL, '098f6bcd4621d373cade4e832627b4f6', 'THAIRIS', '2009-08-26 19:10:45', 'atkisi7ce6sbkc5c3se06onp84', '1', 0, '14:13:59', '      <div>----------------------------------</div>   Dr.Test Radiologist (SPT)<div>----------------------------------</div>', 'swrp'),
+(2, '0', '', '0', 'Not assign', '-', '0', '0', 'RADIOLOGIST', NULL, '0', 'THAIRIS', '2009-08-26 19:10:45', '208f4137246e345fad93c7a3362c2991', '1', 0, '00:00:00', '', NULL),
+(3, 'doctor', '', 'doctor', 'doctor', 'doctor', 'doctor', 'Service', 'RADIOLOGIST', NULL, '098f6bcd4621d373cade4e832627b4f6', 'THAIRIS', '2013-09-04 15:23:25', 'a7ekffmif8v8hdqq4vp3ggupa7', '1', 0, '13:47:00', '', NULL),
+(4, '', '', 'tech1', 'Radiolgrapher1', '', '', '', 'TECHNICIAN', NULL, '098f6bcd4621d373cade4e832627b4f6', 'THAIRIS', '2016-11-09 07:15:00', '', '1', 0, NULL, '', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_user_df_code`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_user_df_code` (
+  `ID` int(11) NOT NULL,
+  `USER_ID` varchar(10) NOT NULL,
+  `DF_CODE` varchar(20) NOT NULL,
+  `NAME_THAI` varchar(50) NOT NULL,
+  `NAME_ENG` varchar(50) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=tis620;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_user_right`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_user_right` (
+  `USER_ID` int(3) NOT NULL,
+  `SUPER_ADMIN` int(1) NOT NULL DEFAULT '0',
+  `ADMIN` int(1) NOT NULL DEFAULT '0',
+  `DELETE_ORDER` int(1) NOT NULL DEFAULT '0',
+  `CHANGE_STATUS` int(1) NOT NULL DEFAULT '0',
+  `EDIT_PATIENT` int(1) NOT NULL DEFAULT '0'
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=tis620;
+
+--
+-- Dumping data for table `xray_user_right`
+--
+
+INSERT INTO `xray_user_right` (`USER_ID`, `SUPER_ADMIN`, `ADMIN`, `DELETE_ORDER`, `CHANGE_STATUS`, `EDIT_PATIENT`) VALUES
+(1, 1, 1, 1, 1, 1),
+(2, 0, 0, 0, 0, 0),
+(3, 0, 0, 1, 1, 1),
+(4, 0, 0, 0, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_user_type`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_user_type` (
+  `CODE` varchar(10) NOT NULL,
+  `TYPE` varchar(15) NOT NULL,
+  `NAME` varchar(20) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=tis620;
+
+--
+-- Dumping data for table `xray_user_type`
+--
+
+INSERT INTO `xray_user_type` (`CODE`, `TYPE`, `NAME`) VALUES
+('1', 'ADMIN', 'ADMIN'),
+('4', 'RADIOLOGIST', 'RADIOLOGIST'),
+('3', 'CLINICIAN', 'CLINICIAN'),
+('2', 'CLERK', 'CLERK'),
+('5', 'TECHNICIAN', 'TECHNICIAN');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `xray_version`
+--
+
+CREATE TABLE IF NOT EXISTS `xray_version` (
+  `VERSION` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `xray_version`
+--
+
+INSERT INTO `xray_version` (`VERSION`) VALUES
+('1.0'),
+('');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `xray_auto`
+--
+ALTER TABLE `xray_auto`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `xray_billing`
+--
+ALTER TABLE `xray_billing`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `xray_birad`
+--
+ALTER TABLE `xray_birad`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `xray_center`
+--
+ALTER TABLE `xray_center`
+  ADD PRIMARY KEY (`CODE`);
+
+--
+-- Indexes for table `xray_code`
+--
+ALTER TABLE `xray_code`
+  ADD PRIMARY KEY (`XRAY_CODE`);
+
+--
+-- Indexes for table `xray_country`
+--
+ALTER TABLE `xray_country`
+  ADD PRIMARY KEY (`COUNTRY_CODE`);
+
+--
+-- Indexes for table `xray_department`
+--
+ALTER TABLE `xray_department`
+  ADD PRIMARY KEY (`DEPARTMENT_ID`);
+
+--
+-- Indexes for table `xray_film_folder`
+--
+ALTER TABLE `xray_film_folder`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `xray_image_status`
+--
+ALTER TABLE `xray_image_status`
+  ADD PRIMARY KEY (`HN`);
+
+--
+-- Indexes for table `xray_log`
+--
+ALTER TABLE `xray_log`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `xray_modalities`
+--
+ALTER TABLE `xray_modalities`
+  ADD PRIMARY KEY (`MOD_NAME`);
+
+--
+-- Indexes for table `xray_modalities_type`
+--
+ALTER TABLE `xray_modalities_type`
+  ADD PRIMARY KEY (`MOD_TYPE`);
+
+--
+-- Indexes for table `xray_news`
+--
+ALTER TABLE `xray_news`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `xray_order_cart`
+--
+ALTER TABLE `xray_order_cart`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `xray_patient_info`
+--
+ALTER TABLE `xray_patient_info`
+  ADD PRIMARY KEY (`ID`),
+  ADD UNIQUE KEY `MRN` (`MRN`);
+
+--
+-- Indexes for table `xray_patient_right`
+--
+ALTER TABLE `xray_patient_right`
+  ADD PRIMARY KEY (`RIGHT_CODE`);
+
+--
+-- Indexes for table `xray_preparation`
+--
+ALTER TABLE `xray_preparation`
+  ADD PRIMARY KEY (`PREP_ID`);
+
+--
+-- Indexes for table `xray_province`
+--
+ALTER TABLE `xray_province`
+  ADD PRIMARY KEY (`PROVINCE_CODE`);
+
+--
+-- Indexes for table `xray_referrer`
+--
+ALTER TABLE `xray_referrer`
+  ADD PRIMARY KEY (`ID`),
+  ADD UNIQUE KEY `REFERRER_ID` (`REFERRER_ID`);
+
+--
+-- Indexes for table `xray_report`
+--
+ALTER TABLE `xray_report`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `xray_report_structure`
+--
+ALTER TABLE `xray_report_structure`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `xray_report_template`
+--
+ALTER TABLE `xray_report_template`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `xray_request`
+--
+ALTER TABLE `xray_request`
+  ADD PRIMARY KEY (`ID`),
+  ADD UNIQUE KEY `REQUEST_NO` (`REQUEST_NO`);
+
+--
+-- Indexes for table `xray_request_detail`
+--
+ALTER TABLE `xray_request_detail`
+  ADD PRIMARY KEY (`ID`),
+  ADD UNIQUE KEY `ACCESSION` (`ACCESSION`);
+
+--
+-- Indexes for table `xray_schedule`
+--
+ALTER TABLE `xray_schedule`
+  ADD PRIMARY KEY (`HN`);
+
+--
+-- Indexes for table `xray_sc_calendar`
+--
+ALTER TABLE `xray_sc_calendar`
+  ADD PRIMARY KEY (`calendar_id`);
+
+--
+-- Indexes for table `xray_sc_events`
+--
+ALTER TABLE `xray_sc_events`
+  ADD PRIMARY KEY (`event_id`),
+  ADD KEY `events_ibfk_1` (`calendar_id`);
+
+--
+-- Indexes for table `xray_status`
+--
+ALTER TABLE `xray_status`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `xray_stock`
+--
+ALTER TABLE `xray_stock`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `xray_tambon`
+--
+ALTER TABLE `xray_tambon`
+  ADD PRIMARY KEY (`TAMBON_CODE`);
+
+--
+-- Indexes for table `xray_teaching_cases`
+--
+ALTER TABLE `xray_teaching_cases`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `xray_teaching_cat`
+--
+ALTER TABLE `xray_teaching_cat`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `xray_type`
+--
+ALTER TABLE `xray_type`
+  ADD PRIMARY KEY (`XRAY_TYPE_CODE`);
+
+--
+-- Indexes for table `xray_usage`
+--
+ALTER TABLE `xray_usage`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `xray_user`
+--
+ALTER TABLE `xray_user`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `xray_user_df_code`
+--
+ALTER TABLE `xray_user_df_code`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `xray_user_right`
+--
+ALTER TABLE `xray_user_right`
+  ADD PRIMARY KEY (`USER_ID`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `xray_auto`
+--
+ALTER TABLE `xray_auto`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `xray_billing`
+--
+ALTER TABLE `xray_billing`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `xray_film_folder`
+--
+ALTER TABLE `xray_film_folder`
+  MODIFY `ID` tinyint(10) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `xray_log`
+--
+ALTER TABLE `xray_log`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10093;
+--
+-- AUTO_INCREMENT for table `xray_order_cart`
+--
+ALTER TABLE `xray_order_cart`
+  MODIFY `ID` int(10) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `xray_patient_info`
+--
+ALTER TABLE `xray_patient_info`
+  MODIFY `ID` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=22282278;
+--
+-- AUTO_INCREMENT for table `xray_preparation`
+--
+ALTER TABLE `xray_preparation`
+  MODIFY `PREP_ID` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
+--
+-- AUTO_INCREMENT for table `xray_referrer`
+--
+ALTER TABLE `xray_referrer`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=402;
+--
+-- AUTO_INCREMENT for table `xray_report`
+--
+ALTER TABLE `xray_report`
+  MODIFY `ID` int(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=113992;
+--
+-- AUTO_INCREMENT for table `xray_report_structure`
+--
+ALTER TABLE `xray_report_structure`
+  MODIFY `ID` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=19;
+--
+-- AUTO_INCREMENT for table `xray_report_template`
+--
+ALTER TABLE `xray_report_template`
+  MODIFY `ID` int(5) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=551;
+--
+-- AUTO_INCREMENT for table `xray_request`
+--
+ALTER TABLE `xray_request`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `xray_request_detail`
+--
+ALTER TABLE `xray_request_detail`
+  MODIFY `ID` int(10) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `xray_sc_calendar`
+--
+ALTER TABLE `xray_sc_calendar`
+  MODIFY `calendar_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT for table `xray_sc_events`
+--
+ALTER TABLE `xray_sc_events`
+  MODIFY `event_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=236;
+--
+-- AUTO_INCREMENT for table `xray_status`
+--
+ALTER TABLE `xray_status`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
+--
+-- AUTO_INCREMENT for table `xray_stock`
+--
+ALTER TABLE `xray_stock`
+  MODIFY `ID` int(6) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `xray_teaching_cases`
+--
+ALTER TABLE `xray_teaching_cases`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `xray_teaching_cat`
+--
+ALTER TABLE `xray_teaching_cat`
+  MODIFY `ID` int(5) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=12;
+--
+-- AUTO_INCREMENT for table `xray_usage`
+--
+ALTER TABLE `xray_usage`
+  MODIFY `ID` int(10) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `xray_user`
+--
+ALTER TABLE `xray_user`
+  MODIFY `ID` int(5) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `xray_user_df_code`
+--
+ALTER TABLE `xray_user_df_code`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `xray_user_right`
+--
+ALTER TABLE `xray_user_right`
+  MODIFY `USER_ID` int(3) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
