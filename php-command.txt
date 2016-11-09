@@ -1,4 +1,0 @@
-﻿$sql = “SELECT COUNT(Name) FROM students”; 
-$rs_result = mysql_query($sql,$connection); 
-$row = mysql_fetch_row($rs_result); 
-$total_records = $row[0]; 
